@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ParticipantRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -68,6 +70,28 @@ class Participant implements UserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $urlAvatar;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="participants")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $campus;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="organisateur")
+     */
+    private $sorties;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Sortie::class, inversedBy="participants")
+     */
+    private $estInscrit;
+
+    public function __construct()
+    {
+        $this->sorties = new ArrayCollection();
+        $this->estInscrit = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -233,4 +257,71 @@ class Participant implements UserInterface
 
         return $this;
     }
+
+    public function getCampus(): ?Campus
+    {
+        return $this->campus;
+    }
+
+    public function setCampus(?Campus $campus): self
+    {
+        $this->campus = $campus;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sortie[]
+     */
+    public function getSorties(): Collection
+    {
+        return $this->sorties;
+    }
+
+    public function addSorty(Sortie $sorty): self
+    {
+        if (!$this->sorties->contains($sorty)) {
+            $this->sorties[] = $sorty;
+            $sorty->setOrganisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSorty(Sortie $sorty): self
+    {
+        if ($this->sorties->removeElement($sorty)) {
+            // set the owning side to null (unless already changed)
+            if ($sorty->getOrganisateur() === $this) {
+                $sorty->setOrganisateur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sortie[]
+     */
+    public function getEstInscrit(): Collection
+    {
+        return $this->estInscrit;
+    }
+
+    public function addEstInscrit(Sortie $estInscrit): self
+    {
+        if (!$this->estInscrit->contains($estInscrit)) {
+            $this->estInscrit[] = $estInscrit;
+        }
+
+        return $this;
+    }
+
+    public function removeEstInscrit(Sortie $estInscrit): self
+    {
+        $this->estInscrit->removeElement($estInscrit);
+
+        return $this;
+    }
+    
 }
