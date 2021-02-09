@@ -56,9 +56,15 @@ class RegistrationFormType extends AbstractType
                 'invalid_message' => 'Eh le pirate ! Pas touche à notre code !',
                 'choice_label' => 'nom'
             ])
-            ->add('plainPassword', PasswordType::class, [
-                'label' => 'Mot de passe*',
+            ->add('plainPassword', RepeatedType::class, [
+                'type' => PasswordType::class,
                 'mapped' => false,
+                'first_options' => [
+                    'label' => 'Mot de passe'
+                ],
+                'second_options' => [
+                    'label' => 'Confirmer le mot de passe'
+                ],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez spécifier un mot de passe',
@@ -71,13 +77,6 @@ class RegistrationFormType extends AbstractType
                         'maxMessage' => 'La limite du mot de passe est de 4096 caractères pour des raisons de sécurité'
                     ]),
                 ]
-            ])
-            ->add('confirmPassword', RepeatedType::class, [
-                'type' => PasswordType::class,
-                'mapped' => false,
-                'label' => 'Confirmer le mot de passe',
-                'invalid_message' => 'Les mots de passe ne sont pas identiques',
-                'required' => true
             ])
             //Bouton de validation
 //            ->add('create', SubmitType::class, [
