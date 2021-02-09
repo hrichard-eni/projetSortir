@@ -74,7 +74,7 @@ class Participant implements UserInterface
     private $urlAvatar;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="participants")
+     * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="participant")
      * @ORM\JoinColumn(nullable=false)
      */
     private $campus;
@@ -85,7 +85,7 @@ class Participant implements UserInterface
     private $sorties;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Sortie::class, inversedBy="participants")
+     * @ORM\ManyToMany(targetEntity=Sortie::class, inversedBy="participant")
      */
     private $estInscrit;
 
