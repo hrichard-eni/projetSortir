@@ -39,8 +39,8 @@ footer{
     background-color: #110e54;
     text-align: center;
     color: white;
-    position: sticky;
-    bottom: 50px;
+    position: absolute;
+    bottom: 0;
     margin: 0;
     width: 100%;
     padding: 10px 30px;
