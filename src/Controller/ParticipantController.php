@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class ParticipantController extends AbstractController
 {
@@ -18,7 +19,8 @@ class ParticipantController extends AbstractController
      * @Route("/profil/", name="participant_profil")
      */
     public function profil(Request $request,
-                           EntityManagerInterface $entityManager): Response
+                           EntityManagerInterface $entityManager,
+                           UserPasswordEncoderInterface $passwordEncoder): Response
     {
 
         //On récupère les infos de l'utilisateur connecté pour lui afficher directement dans le formulaire
@@ -35,6 +37,13 @@ class ParticipantController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
+            $participant->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $form->get('password')->getData()
+                )
+            );
+
 
             $entityManager->persist($participant);
             $entityManager->flush();
