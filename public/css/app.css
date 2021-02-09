@@ -6,7 +6,6 @@ facilement ^^
 
 * {
     box-sizing: border-box;
-    width: 100%;
     margin: 0;
     padding: 0;
     text-decoration: none;
@@ -40,12 +39,11 @@ footer{
     background-color: #110e54;
     text-align: center;
     color: white;
-    position: absolute;
-    bottom: 0;
+    position: sticky;
+    bottom: 50px;
     margin: 0;
     width: 100%;
     padding: 10px 30px;
-    height: 50px;
 }
 
 header {
