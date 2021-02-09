@@ -1,17 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <script type="text/javascript" src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
-        <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-        {% block javascripts %}
+
+        {% block stylesheets %}
+            <script type="text/javascript" src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
+            <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+            <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        {% endblock %}
+        {% block images %}
             <link rel="icon" href="{{ asset('img/favicon.png') }}">
         {% endblock %}
+        {% block javascripts %}
+            <script type="text/javascript" src="{{ asset('js/jquery-3.5.1.min.js') }}"></script>
+        {% endblock %}
+
     </head>
+
     <body>
-        {% block body %}{% endblock %}
+
+    <header>
+        <h1>
+            <a class="link-no-deco" href="{{ path('main_home') }}">
+                <img class="img-home" src="{{  asset('img/home.png') }}" alt="">
+            </a>
+            <span>
+                Sortir.com | par <a class="link-eni" href="https://www.eni-ecole.fr/">ENI Ecole</a>
+            </span>
+        </h1>
+    </header>
+
+        {% block body %}
+            {% block header %}{% endblock %}
+            {% block main %}{% endblock %}
+            {% block footer %}{% endblock %}
+        {% endblock %}
+
+    <footer>
+        <h3>
+            Alexandre, Aurore, Hugo | &copy; {{ "now"|date('Y') }}
+        </h3>
+        <h3>
+            <a>
+                Mentions légales
+            </a>
+            &nbsp;|&nbsp;
+            <a>
+                Nous contacter
+            </a>
+        </h3>
+    </footer>
+
     </body>
 </html>
