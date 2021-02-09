@@ -2,7 +2,11 @@
 <html lang="fr">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Sortir.com{% endblock %}</title>
+
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100;200;300;400&display=swap');
+        </style>
 
         {% block stylesheets %}
             <script type="text/javascript" src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
@@ -42,13 +46,7 @@
                 Alexandre, Aurore, Hugo | &copy; {{ "now"|date('Y') }}
             </h3>
             <h3>
-                <a>
-                    Mentions légales
-                </a>
-                &nbsp;|&nbsp;
-                <a>
-                    Nous contacter
-                </a>
+                <a>Mentions légales</a>&nbsp;|&nbsp;<a>Nous contacter</a>
             </h3>
         </footer>
     {% endblock %}
