@@ -3,8 +3,48 @@
 {% block title %} | Home{% endblock %}
 
 {% block body %}
-<div>
-    <h1>Page d'accueil</h1>
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab blanditiis consequatur deleniti, deserunt dignissimos earum eveniet, ex fugit molestias provident tempora tenetur, veniam! Error explicabo incidunt, maiores modi nobis ullam?
-</div>
+    {% block header %}<div id="header"></div>{% endblock%}
+    {% block main %}
+
+        <div id="barre_nav" class = "row justify-content-end">
+            <div class="col-1">Villes</div>
+            <div class="col-1">Campus</div>
+            <div class="col-1">Accueil</div>
+            <div class="col-1">Mon profil</div>
+            <div class="col-2">Se connecter</div>
+        </div>
+        <div id="filtres"></div>
+        <div id="liste_sorties">
+        <table id="tab_sorties" class="col-12">
+            <thead>
+                <tr>
+                    <th class="col-3">Nom de la sortie</th>
+                    <th class="col-1">Date de la sortie</th>
+                    <th class="col-1">Clôture</th>
+                    <th class="col-1">inscrits/places</th>
+                    <th class="col-1">Etat</th>
+                    <th class="col-1">Inscrit</th>
+                    <th class="col-2">Organisateur</th>
+                    <th class="col-2">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    {% for sortie in sorties %}
+                    <td class="col-3">{{ sortie.nom }}</td>
+                    <td class="col-1">{{ sortie.dateHeureDebut|date('Y-m-d') }}</td>
+                    <td class="col-1">{{ sortie.dateLimiteInscription|date('Y-m-d') }}</td>
+                    <td class="col-1">X/{{ sortie.nbInscriptionsMax }}</td>
+                    <td class="col-1">{{ sortie.etat.libelle }}</td>
+                    <td class="col-1">...</td>
+                    <td class="col-2">nom orga</td>
+                    <td class="col-2">...</td>
+                </tr>
+            </tbody>
+            {%  endfor %}
+        </table>
+        </div>
+    {% endblock%}
+
 {% endblock %}
+{% block footer %}{% endblock%}
