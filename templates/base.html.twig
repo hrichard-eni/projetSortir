@@ -20,35 +20,38 @@
 
     <body>
 
-    <header>
-        <h1>
-            <a class="link-no-deco" href="{{ path('main_home') }}">
-                <img class="img-home" src="{{  asset('img/home.png') }}" alt="">
-            </a>
-            <span>
+    {% block header %}
+        <header>
+            <h1>
+                <a class="link-no-deco" href="{{ path('main_home') }}">
+                    <img class="img-home" src="{{  asset('img/home.png') }}" alt="">
+                </a>
+                <span>
                 Sortir.com | par <a class="link-eni" href="https://www.eni-ecole.fr/">ENI Ecole</a>
             </span>
-        </h1>
-    </header>
+            </h1>
+        </header>
+    {% endblock %}
 
-            {% block header %}{% endblock %}
-            {% block main %}{% endblock %}
-            {% block footer %}
-                <footer>
-                    <h3>
-                        Alexandre, Aurore, Hugo | &copy; {{ "now"|date('Y') }}
-                    </h3>
-                    <h3>
-                        <a>
-                            Mentions légales
-                        </a>
-                        &nbsp;|&nbsp;
-                        <a>
-                            Nous contacter
-                        </a>
-                    </h3>
-                </footer>
-            {% endblock %}
+    {% block main %}
+    {% endblock %}
+
+    {% block footer %}
+        <footer>
+            <h3>
+                Alexandre, Aurore, Hugo | &copy; {{ "now"|date('Y') }}
+            </h3>
+            <h3>
+                <a>
+                    Mentions légales
+                </a>
+                &nbsp;|&nbsp;
+                <a>
+                    Nous contacter
+                </a>
+            </h3>
+        </footer>
+    {% endblock %}
 
 
 

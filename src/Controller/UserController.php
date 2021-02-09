@@ -45,7 +45,7 @@ class UserController extends AbstractController
         }
 
         return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form->createView(),
+            'register' => $form->createView(),
         ]);
     }
 
@@ -55,9 +55,9 @@ class UserController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        if ($this->getUser()) {
-            return $this->redirectToRoute('main_home');
-        }
+//        if ($this->getUser()) {
+//            return $this->redirectToRoute('main_home');
+//        }
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();

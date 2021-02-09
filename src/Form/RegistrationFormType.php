@@ -7,6 +7,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -71,13 +72,20 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ]
             ])
-            //Bouton de validation
-            ->add('create', SubmitType::class, [
-                'label' => 'Créer ce participant',
-                'attr' => [
-                    'class' => 'btn btn-secondary custom-button'
-                ]
+            ->add('confirmPassword', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'mapped' => false,
+                'label' => 'Confirmer le mot de passe',
+                'invalid_message' => 'Les mots de passe ne sont pas identiques',
+                'required' => true
             ])
+            //Bouton de validation
+//            ->add('create', SubmitType::class, [
+//                'label' => 'Créer ce participant',
+//                'attr' => [
+//                    'class' => 'btn btn-secondary custom-button'
+//                ]
+//            ])
         ;
     }
 

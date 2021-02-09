@@ -4,14 +4,37 @@
 
 {% block body %}
     {% for flashError in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+        <div class="container center">
+            <h1>Nouveau participant</h1>
+
+            {{ form_start(register)}}
+            <div class="col-6">
+                {{ form_row(register.prenom) }}
+                {{ form_row(register.nom) }}
+                {{ form_row(register.pseudo) }}
+                {{ form_row(register.email) }}
+            </div>
+
+            <div class="col-6">
+                {{ form_row(register.telephone) }}
+                {{ form_row(register.campus) }}
+                {{ form_row(register.plainPassword) }}
+                {{ form_row(register.confirmPassword) }}
+            </div>
+
+            <div class="col-12">
+                <button>Ajouter ce participant</button>
+            </div>
+
+            {{ form_end(register)}}
+        </div>
     {% endfor %}
 
 
-    <div class="little-form">
-        <h1>Register</h1>
-
-        {{ form(registrationForm)}}
-    </div>
+{#
+    {% if flashError %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endif %}
+#}
 
 {% endblock %}
