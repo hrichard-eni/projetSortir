@@ -60,7 +60,7 @@ header {
     height: 50px;
 }
 
-input {
+input, select {
     width: auto;
     margin-bottom: 20px;
 }
