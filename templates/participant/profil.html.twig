@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="container">
+        <div class="row">
+            <h1>Mon profil</h1>
+            <div id="formParticipant">
+                <p><strong>Email : </strong> {{ app.user.email }}</p>
+                {{ form(participant_form) }}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

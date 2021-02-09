@@ -31,26 +31,26 @@
         </h1>
     </header>
 
-        {% block body %}
             {% block header %}{% endblock %}
             {% block main %}{% endblock %}
-            {% block footer %}{% endblock %}
-        {% endblock %}
+            {% block footer %}
+                <footer>
+                    <h3>
+                        Alexandre, Aurore, Hugo | &copy; {{ "now"|date('Y') }}
+                    </h3>
+                    <h3>
+                        <a>
+                            Mentions légales
+                        </a>
+                        &nbsp;|&nbsp;
+                        <a>
+                            Nous contacter
+                        </a>
+                    </h3>
+                </footer>
+            {% endblock %}
 
-    <footer>
-        <h3>
-            Alexandre, Aurore, Hugo | &copy; {{ "now"|date('Y') }}
-        </h3>
-        <h3>
-            <a>
-                Mentions légales
-            </a>
-            &nbsp;|&nbsp;
-            <a>
-                Nous contacter
-            </a>
-        </h3>
-    </footer>
+
 
     </body>
 </html>
