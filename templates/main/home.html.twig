@@ -4,6 +4,21 @@
 
     {% block main %}
 
+        <div id="filtres_sorties" class="col-12">
+            <div id="filtres_champs" class="col-4">
+                <div id="filtre_campus">
+                    {{ form_start(campus_form, {attr: {'novalidate': 'novalidate'}}) }}
+                    {{ form_widget(campus_form) }}
+                    {{ form_end(campus_form) }}
+                </div>
+
+            </div>
+
+
+
+
+        </div>
+
         <div id="barre_nav" class = "row justify-content-end">
             <div class="col-1">Villes</div>
             <div class="col-1">Campus</div>

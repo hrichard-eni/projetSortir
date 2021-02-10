@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Campus;
+use App\Entity\Filtre;
+use App\Form\FiltresSortiesFormType;
 use App\Repository\SortieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,8 +20,19 @@ class MainController extends AbstractController
     public function index(SortieRepository $sortieRepository): Response
     {
         $sorties = $sortieRepository->findAll();
+        $filtrecampus = new Filtre();
+
+        $form = $this->createForm(FiltresSortiesFormType::class, $filtrecampus);
+
+
+
         return $this->render('main/home.html.twig', [
-            "sorties" => $sorties
+            "sorties" => $sorties,
+            "campus_form" => $form->createView()
         ]);
+
+
     }
+
+
 }
