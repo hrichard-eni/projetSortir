@@ -12,6 +12,10 @@ facilement ^^
     font-family: 'Josefin Sans', sans-serif;
 }
 
+body {
+    padding-bottom: 5em;
+}
+
 .bold {
     font-weight: bold;
 }
