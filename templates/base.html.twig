@@ -25,16 +25,52 @@
     <body>
 
     {% block header %}
-        <header>
+        <header class="bg-light text-center text-lg-start header" style="margin-bottom: 1em">
+            <div class="text-center p-3" style="background-color:#110e54">
             <h1>
                 <a class="link-no-deco" href="{{ path('main_home') }}">
                     <img class="img-home" src="{{  asset('img/home.png') }}" alt="">
                 </a>
-                <span>
-                Sortir.com | par <a class="link-eni" href="https://www.eni-ecole.fr/">ENI Ecole</a>
+                <span class="text-white">
+                Sortir.com | par <a style="text-decoration: none" class="link-eni" href="https://www.eni-ecole.fr/">ENI Ecole</a>
             </span>
             </h1>
+            </div>
+            <nav class="navbar navbar-expand-lg navbar-light" style="background-color:#296A6A">
+                <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                    <ul class="navbar-nav" style="font-size:1.5em;">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{{ path('main_home') }}">Home <span class="sr-only"></span></a>
+                        </li>
+
+                        {% if (app.user == null) %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_login') }}">Login</a>
+                        </li>
+                        {% endif %}
+
+                        {% if (app.user and app.user.administrateur == 1) %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_register') }}">Ajouter utilisateur</a>
+                        </li>
+                        {% endif %}
+                        {% if (app.user) %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('participant_profil') }}">Mon profil</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
+                        </li>
+                        {% endif %}
+
+                    </ul>
+                </div>
+            </nav>
+
+
         </header>
+
+
     {% endblock %}
 
     {# read and display all flash messages #}
@@ -48,18 +84,21 @@
         </div>
     {% endfor %}
 
-
     {% block main %}
     {% endblock %}
 
     {% block footer %}
-        <footer>
-            <h3>
+        <footer class="bg-light text-center text-lg-start footer fixed-bottom">
+            <div>
+            <div class="text-center p-3" style="background-color:#110e54">
+            <p class="text-white">
                 Alexandre, Aurore, Hugo | &copy; {{ "now"|date('Y') }}
-            </h3>
-            <h3>
+            </p>
+            <p class="text-white">
                 <a>Mentions légales</a>&nbsp;|&nbsp;<a>Nous contacter</a>
-            </h3>
+            </p>
+            </div>
+            </div>
         </footer>
     {% endblock %}
 
