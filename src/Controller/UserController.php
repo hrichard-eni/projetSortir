@@ -27,6 +27,9 @@ class UserController extends AbstractController
             //Hydrater les propriétés manquantes
             $user->setAdministrateur(false);
             $user->setActif(true);
+            $user->setRoles(['ROLE_USER']);
+
+            //Ajouter les roles par défaut
 
             //Encode the plain password
             $user->setPassword(
