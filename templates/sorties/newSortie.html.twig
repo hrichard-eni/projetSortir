@@ -15,6 +15,7 @@
             {{ form_start(newSortie) }}
 
             <div class="row">
+{#                {{ form(newSortie) }}#}
                 <div class="col-6">
                     {{ form_row(newSortie.nom) }}
                     {{ form_row(newSortie.dateHeureDebut) }}
@@ -26,7 +27,6 @@
                     {{ form_row(newSortie.nbInscriptionsMax) }}
                     {{ form_row(newSortie.lieu) }}
                 </div>
-
                 <div class="col-6">
                     {{ form_row(newSortie.organisateur) }}
                 </div>
@@ -40,7 +40,7 @@
                 </div>
             </div>
 
-            {{ form_start(newSortie) }}
+            {{ form_end(newSortie) }}
 
         </div>
 

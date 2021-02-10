@@ -13,20 +13,22 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SortiesController extends AbstractController
 {
+
+
     /**
      * @Route("/newSortie", name="sorties_new")
      */
     public function newSortie(Request $request, EntityManagerInterface $entityManager): Response
     {
         $sortie = new Sortie();
-        $form = $this->createForm(NewSortieType::class, $sortie);
-        $form->handleRequest($request);
-
-        dump($this->getUser());
 
         //Préremplissage l'organisateur et l'état
         $sortie->setOrganisateur($this->getUser());
-//        $sortie->setCampusOrganisateur($this->getUser()->getCampus());
+        $sortie->setCampusOrganisateur($this->getUser()->getCampus());
+
+        $form = $this->createForm(NewSortieType::class, $sortie);
+        $form->handleRequest($request);
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             //Hydrater les propriétés manquantes
