@@ -49,9 +49,9 @@ class ParticipantFormType extends AbstractType
                         'maxSize' => '5M',
                         'maxSizeMessage' => 'Fichier trop lourd !',
                         'maxHeight' => 500,
-                        'maxHeightMessage' => 'Image trop grande ! (minimum 500 x 500)',
+                        'maxHeightMessage' => 'Image trop grande ! (maximum 500 x 500)',
                         'maxWidth' => 500,
-                        'maxWidthMessage' => 'Image trop grande ! (minimum 500 x 500)',
+                        'maxWidthMessage' => 'Image trop grande ! (maximum 500 x 500)',
                     ])
                 ]
             ])
