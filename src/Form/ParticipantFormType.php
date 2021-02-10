@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Participant;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -17,8 +18,9 @@ class ParticipantFormType extends AbstractType
     {
         $builder
 
-            ->add('nom')
+            ->add('pseudo')
             ->add('prenom')
+            ->add('nom')
             ->add('telephone', TextType::class, [
                 'required' => false
             ])
@@ -31,8 +33,14 @@ class ParticipantFormType extends AbstractType
                 'second_options' => ['label' => 'Confirmer le mot de passe']
 
             ])
+            ->add('campus', EntityType::class, [
+                'class' => 'App\Entity\Campus',
+                'invalid_message' => 'Eh le pirate ! Pas touche à notre code !',
+                'choice_label' => 'nom'
+            ])
             ->add('submit', SubmitType::class, [
                 "label"=>"Modifier",
+                "attr" => ['class'=>'btn btn-primary col-2']
             ])
         ;
     }
