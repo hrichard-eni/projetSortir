@@ -64,7 +64,7 @@ input, select {
     margin-bottom: 20px;
 }
 
-.label {
+.label-over-input label {
     width: 100%;
 }
 

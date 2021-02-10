@@ -22,9 +22,15 @@ class SortiesController extends AbstractController
         $form = $this->createForm(NewSortieType::class, $sortie);
         $form->handleRequest($request);
 
+//        dump($this->getUser());
+
+        //Préremplissage l'organisateur et l'état
+//        $sortie->setOrganisateur($this->getUser()->getPseudo);
+//        $sortie->setCampusOrganisateur($this->getUser()->getCampus);
+
         if ($form->isSubmitted() && $form->isValid()) {
-            //TODO : Préremplir l'organisateur et l'état
-            $sortie->setOrganisateur($this->getUser()->getPseudo);
+            //Hydrater les propriétés manquantes
+            $sortie->setEtat('CR');
 
             //Envoi à la BDD
             $entityManager->persist($sortie);
