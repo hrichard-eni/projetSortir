@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Participant;
 use App\Form\RegistrationFormType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +18,7 @@ class UserController extends AbstractController
     /**
      * @Route("/register", name="app_register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $entityManager): Response
     {
         $user = new Participant();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -27,11 +28,12 @@ class UserController extends AbstractController
             //Hydrater les propriétés manquantes
             $user->setAdministrateur(false);
             $user->setActif(true);
+
+            //Ajout du role par défaut pour les nouveaux utilisateurs
+            //NOTE : Le role admin s'obtient en remplacant par ROLE_ADMIN dans la BDD
             $user->setRoles(['ROLE_USER']);
 
-            //Ajouter les roles par défaut
-
-            //Encode the plain password
+            //Hashage du mot de passe pour sécuriser
             $user->setPassword(
                 $passwordEncoder->encodePassword(
                     $user,
@@ -39,10 +41,8 @@ class UserController extends AbstractController
                 )
             );
 
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
-            // do anything else you need here, like send an email
 
             return $this->redirectToRoute('main_home');
         }
