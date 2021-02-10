@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | New Sortie !
+{% endblock %}
+
+{% block main %}
+
+        <div class="container center">
+
+            <h1 style="margin-top: 30px">
+                Créer une nouvelle sortie
+            </h1>
+
+            {{ form_start(newSortie) }}
+
+            <div class="row">
+                <div class="col-6">
+                    {{ form_row(newSortie.nom) }}
+                    {{ form_row(newSortie.dateHeureDebut) }}
+                    {{ form_row(newSortie.infosSortie) }}
+                </div>
+                <div class="col-6">
+                    {{ form_row(newSortie.dateLimiteInscription) }}
+                    {{ form_row(newSortie.duree) }}
+                    {{ form_row(newSortie.nbInscriptionsMax) }}
+                    {{ form_row(newSortie.lieu) }}
+                </div>
+
+                <div class="col-5"></div>
+                <div class="col-2">
+                    <button class="btn btn-secondary">Créer une sortie</button>
+                </div>
+            </div>
+
+            {{ form_start(newSortie) }}
+
+        </div>
+
+{% endblock %}
