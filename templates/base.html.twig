@@ -38,28 +38,28 @@
             </div>
             <nav class="navbar navbar-expand-lg navbar-light" style="background-color:#296A6A">
                 <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                    <ul class="navbar-nav" style="font-size:1.5em;">
+                    <ul class="navbar-nav" style="font-size:1.3em;">
                         <li class="nav-item active">
-                            <a class="nav-link" href="{{ path('main_home') }}">Home <span class="sr-only"></span></a>
+                            <a class="nav-link text-white text-uppercase" href="{{ path('main_home') }}">Home <span class="sr-only"></span></a>
                         </li>
 
                         {% if (app.user == null) %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ path('app_login') }}">Login</a>
+                            <a class="nav-link text-white text-uppercase" href="{{ path('app_login') }}">Login</a>
                         </li>
                         {% endif %}
 
                         {% if (app.user and app.user.administrateur == 1) %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ path('app_register') }}">Ajouter utilisateur</a>
+                            <a class="nav-link text-white text-uppercase" href="{{ path('app_register') }}">Ajouter utilisateur</a>
                         </li>
                         {% endif %}
                         {% if (app.user) %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ path('participant_profil') }}">Mon profil</a>
+                            <a class="nav-link text-white text-uppercase" href="{{ path('participant_profil') }}">Mon profil</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
+                            <a class="nav-link text-white text-uppercase" href="{{ path('app_logout') }}">Déconnexion</a>
                         </li>
                         {% endif %}
 
