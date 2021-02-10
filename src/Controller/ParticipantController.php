@@ -28,6 +28,7 @@ class ParticipantController extends AbstractController
         $participant = $entityManager->getRepository(Participant::class)->find($user->getId());
 
         if ($user) {
+            $participant->setPseudo($user->getPseudo());
             $participant->setNom($user->getNom());
             $participant->setPrenom($user->getPrenom());
             $participant->setTelephone($user->getTelephone());
