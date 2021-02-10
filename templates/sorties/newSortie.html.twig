@@ -6,7 +6,7 @@
 
 {% block main %}
 
-        <div class="container center">
+        <div class="container center label-over-input">
 
             <h1 style="margin-top: 30px">
                 Créer une nouvelle sortie
@@ -15,16 +15,23 @@
             {{ form_start(newSortie) }}
 
             <div class="row">
-                <div class="col-6 label-over-input">
+                <div class="col-6">
                     {{ form_row(newSortie.nom) }}
                     {{ form_row(newSortie.dateHeureDebut) }}
                     {{ form_row(newSortie.infosSortie) }}
                 </div>
-                <div class="col-6 label-over-input">
+                <div class="col-6">
                     {{ form_row(newSortie.dateLimiteInscription) }}
                     {{ form_row(newSortie.duree) }}
                     {{ form_row(newSortie.nbInscriptionsMax) }}
                     {{ form_row(newSortie.lieu) }}
+                </div>
+
+                <div class="col-6">
+                    {{ form_row(newSortie.organisateur) }}
+                </div>
+                <div class="col-6">
+                    {{ form_row(newSortie.campusOrganisateur) }}
                 </div>
 
                 <div class="col-5"></div>

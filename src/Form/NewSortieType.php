@@ -36,13 +36,17 @@ class NewSortieType extends AbstractType
             ->add('infosSortie', TextareaType::class, [
                 'label' => 'Description et infos complémentaires'
             ])
-            ->add('organisateur', TextType::class, [
+            ->add('organisateur', EntityType::class, [
+                'class' => 'App\Entity\Participant',
                 'label' => 'Organisateur',
+                'choice_label' => 'pseudo',
                 'disabled' => true
             ])
 //            ->add('participants')
-            ->add('campusOrganisateur', TextType::class, [
+            ->add('campusOrganisateur', EntityType::class, [
+                'class' => 'App\Entity\Campus',
                 'label' => 'Campus organisateur',
+                'choice_label' => 'nom',
                 'disabled' => true
             ])
             ->add('lieu', EntityType::class, [
