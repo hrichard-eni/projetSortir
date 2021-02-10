@@ -22,41 +22,52 @@ class NewSortieType extends AbstractType
             ->add('nom', TextType::class, [
                 'label' => 'Nom de la sortie'
             ])
+
             ->add('dateHeureDebut', DateTimeType::class, [
                 'label' => 'Date et heure de la sortie'
             ])
+
             ->add('duree', TimeType::class, [
                 'label' => 'Durée'
             ])
+
             ->add('dateLimiteInscription', DateTimeType::class, [
                 'label' => 'Date de fin d\'inscription'
             ])
+
             ->add('nbInscriptionsMax', IntegerType::class, [
                 'label' => 'Nombre max de participants'
             ])
+
             ->add('infosSortie', TextareaType::class, [
                 'label' => 'Description et infos complémentaires'
             ])
-            ->add('organisateur', EntityType::class, [
-                'class' => 'App\Entity\Participant',
-                'label' => 'Organisateur',
-                'choice_label' => 'pseudo',
-                'disabled' => true
-            ])
-//            ->add('participants')
-            ->add('campusOrganisateur', EntityType::class, [
-                'class' => 'App\Entity\Campus',
-                'label' => 'Campus organisateur',
-                'choice_label' => 'nom',
-                'disabled' => true
-            ])
+
             ->add('lieu', EntityType::class, [
                 'class' => 'App\Entity\Lieu',
                 'invalid_message' => 'Eh le pirate ! Pas touche à notre code !',
                 'choice_label' => 'nom',
                 'placeholder' => 'Choisir un lieu '
             ])
-//            ->add('etat')
+
+            //Pré-rempli par le controller
+            ->add('organisateur', EntityType::class, [
+                'class' => 'App\Entity\Participant',
+                'label' => 'Organisateur',
+                'choice_label' => 'pseudo',
+                'disabled' => true
+            ])
+
+            //Pré-rempli par le controller
+            ->add('campusOrganisateur', EntityType::class, [
+                'class' => 'App\Entity\Campus',
+                'label' => 'Campus organisateur',
+                'choice_label' => 'nom',
+                'disabled' => true
+            ])
+
+//            ->add('participants') : Géré sur le détail d'une sortie
+//            ->add('etat') : Géré dans le controller
         ;
     }
 
