@@ -19,10 +19,14 @@ class MainController extends AbstractController
      */
     public function index(SortieRepository $sortieRepository): Response
     {
-        $sorties = $sortieRepository->findAll();
-        $filtrecampus = new Filtre();
+        //Afficher toutes les sorties
 
+        $sorties = $sortieRepository->findAll();
+
+        //Menu déroulant affichant les campus
+        $filtrecampus = new Filtre();
         $form = $this->createForm(FiltresSortiesFormType::class, $filtrecampus);
+
 
 
 

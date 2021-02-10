@@ -6,6 +6,7 @@ namespace App\Entity;
 
 class Filtre
 {
+    // Pour le filtre par campus qui est sur la home et permet d'afficher les sorties... par campus, donc
     public $campus;
 
     /**

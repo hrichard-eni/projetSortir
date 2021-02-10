@@ -12,7 +12,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class FiltresSortiesFormType extends AbstractType
 {
-
+// Form du menu déroulant affichant les noms des différents campus sur la home
     public function buildForm(FormBuilderInterface $builder, array $campus){
         $builder
             ->add('campus', EntityType::class, [
