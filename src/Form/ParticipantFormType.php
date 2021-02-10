@@ -5,12 +5,14 @@ namespace App\Form;
 use App\Entity\Participant;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Image;
 
 class ParticipantFormType extends AbstractType
 {
@@ -38,6 +40,22 @@ class ParticipantFormType extends AbstractType
                 'invalid_message' => 'Eh le pirate ! Pas touche à notre code !',
                 'choice_label' => 'nom'
             ])
+
+            ->add('avatar', FileType::class, [
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new Image([
+                        'maxSize' => '5M',
+                        'maxSizeMessage' => 'Fichier trop lourd !',
+                        'maxHeight' => 500,
+                        'maxHeightMessage' => 'Image trop grande ! (minimum 500 x 500)',
+                        'maxWidth' => 500,
+                        'maxWidthMessage' => 'Image trop grande ! (minimum 500 x 500)',
+                    ])
+                ]
+            ])
+
             ->add('submit', SubmitType::class, [
                 "label"=>"Modifier",
                 "attr" => ['class'=>'btn btn-primary col-2']

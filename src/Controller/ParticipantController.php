@@ -6,8 +6,10 @@ namespace App\Controller;
 
 use App\Entity\Participant;
 use App\Form\ParticipantFormType;
+use claviska\SimpleImage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,7 +22,8 @@ class ParticipantController extends AbstractController
      */
     public function profil(Request $request,
                            EntityManagerInterface $entityManager,
-                           UserPasswordEncoderInterface $passwordEncoder): Response
+                           UserPasswordEncoderInterface $passwordEncoder,
+                           string $uploadDir): Response
     {
 
         //On récupère les infos de l'utilisateur connecté pour lui afficher directement dans le formulaire
@@ -45,6 +48,21 @@ class ParticipantController extends AbstractController
                 )
             );
 
+            /** @var UploadedFile $avatar */
+            $avatar = $form->get('avatar')->getData();
+
+            if ($avatar) {
+
+                $newFilename = md5(uniqid()) . "." . $avatar->guessExtension();
+                $avatar->move($uploadDir, $newFilename);
+                $participant->setUrlAvatar($newFilename);
+
+                $image = new SimpleImage();
+                $image->fromFile($uploadDir . $newFilename)
+                    ->bestFit(200, 200)
+                    ->toFile($uploadDir . "small/" . $newFilename);
+            }
+
 
             $entityManager->persist($participant);
             $entityManager->flush();
@@ -55,7 +73,8 @@ class ParticipantController extends AbstractController
         }
 
         return $this->render('participant/profil.html.twig',
-            ["participant_form" => $form->createView()]);
+            ["participant_form" => $form->createView(),
+                "participant" => $participant]);
 
     }
 

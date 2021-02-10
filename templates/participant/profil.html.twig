@@ -4,11 +4,14 @@
     <div class="container">
         <div class="row">
             <h1>Mon profil</h1>
-            <div id="formParticipant">
+            <div class="col-2">
+                <img src="http://localhost/projetsortir/public/profil/small/{{ participant.urlAvatar }}" alt="Avatar du profil">
+            </div>
+            <div id="formParticipant" class="col-10">
                 <p><strong>Email : </strong> {{ app.user.email }}</p>
                 {{ form(participant_form) }}
-            </div>
             <a href="{{ path('main_home') }}" title="Retour à l'accueil"><button class="btn btn-primary col-2" style="margin-top:10px">Annuler</button></a>
+            </div>
         </div>
     </div>
 {% endblock %}
