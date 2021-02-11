@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Sortie;
 use App\Form\NewSortieType;
 use App\Repository\EtatRepository;
+use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -47,6 +48,24 @@ class SortiesController extends AbstractController
         //Si le formulaire n'est pas soumis affiche ce dernier
         return $this->render('sorties/newSortie.html.twig', [
             'newSortie' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/detail/{id}", name="sorties_detail", requirements={"id": "\d+"})
+     */
+    public function inscription(SortieRepository $sortieRepository, int $id): Response
+    {
+        //Aller chercher en BDD la sortie correspondant à l'id passé dans l'URL
+        $selectedSortie = $sortieRepository->find($id);
+
+        if (!$selectedSortie) {
+            throw $this->createNotFoundException("Cette sortie n'existe pas");
+        }
+
+        return $this->render('sorties/detailSortie.html.twig', [
+            "id" => $id,
+            "sortie" => $selectedSortie
         ]);
     }
 }
