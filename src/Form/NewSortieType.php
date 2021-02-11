@@ -28,9 +28,11 @@ class NewSortieType extends AbstractType
                 'invalid_message' => 'Ceci n\'est pas une date valide'
             ])
 
-            ->add('duree', TimeType::class, [
+            ->add('duree', TextType::class, [
                 'label' => 'Durée',
-                'invalid_message' => 'Ceci n\'est pas une durée valide'
+                'attr' => [
+                    'placeholder' => 'L\'après-midi | 3 jours | etc.'
+                ]
             ])
 
             ->add('dateLimiteInscription', DateTimeType::class, [

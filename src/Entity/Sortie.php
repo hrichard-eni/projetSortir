@@ -36,7 +36,7 @@ class Sortie
     private $dateHeureDebut;
 
     /**
-     * @ORM\Column(type="time", nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
     private $duree;
 
@@ -124,12 +124,12 @@ class Sortie
         return $this;
     }
 
-    public function getDuree(): ?DateTimeInterface
+    public function getDuree(): ?string
     {
         return $this->duree;
     }
 
-    public function setDuree(?DateTimeInterface $duree): self
+    public function setDuree(string $duree): self
     {
         $this->duree = $duree;
 
