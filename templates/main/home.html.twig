@@ -4,11 +4,12 @@
 
     {% block main %}
 
-        <div id="filtres_sorties" class="col-12">
-            <div id="filtres_champs" class="col-4">
-                <div id="filtre_campus">
+        <div id="filtres_sorties" class="row justify-content-center">
+            <div id="filtres_champs" class="col-10">
+                <div id="filtre_campus" class ="col-4">
                     {{ form_start(campus_form, {attr: {'novalidate': 'novalidate'}}) }}
-                    {{ form_widget(campus_form) }}
+                    {{ form_label(campus_form.campus) }}
+                    {{ form_widget(campus_form.campus) }}
                     {{ form_end(campus_form) }}
                 </div>
 
@@ -22,13 +23,11 @@
         <div id="barre_nav" class = "row justify-content-end">
             <div class="col-1">Villes</div>
             <div class="col-1">Campus</div>
-            <div class="col-1">Accueil</div>
-            <div class="col-1">Mon profil</div>
-            <div class="col-2">Se connecter</div>
+            <div class="col-1"></div>
         </div>
         <div id="filtres"></div>
-        <div id="liste_sorties">
-            <table id="tab_sorties" class="col-12">
+        <div id="liste_sorties" class="row justify-content-center">
+            <table id="tab_sorties" class="col-10">
                 <thead>
                 <tr>
                     <th class="col-3">Nom de la sortie</th>
@@ -85,6 +84,9 @@
                 tr_lignesSorties[i].style.display="none";
             }
         }
+
+
+
 
     }
 
