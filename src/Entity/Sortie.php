@@ -7,7 +7,8 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=SortieRepository::class)
@@ -18,55 +19,56 @@ class Sortie
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     *
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     *
      */
     private $nom;
 
     /**
      * @ORM\Column(type="datetime")
-     *
+     * @Assert\Type("datetime")
+     * @Assert\GreaterThan("today",
+     *     message="La date de la sortie doit se trouver dans le futur ! On a pas encore inventé la machine à remonter le temps ^^")
      */
     private $dateHeureDebut;
 
     /**
      * @ORM\Column(type="time", nullable=true)
-     *
      */
     private $duree;
 
     /**
      * @ORM\Column(type="datetime")
-     *
+     * @Assert\Type("datetime")
+     * @Assert\GreaterThan("today",
+     *     message="La date de fin d'inscription doit se trouver dans le futur sinon personne viendra à ta sortie ^^")
+     * @Assert\Expression(
+     *     "this.getDateHeureDebut() >= this.getDateLimiteInscription()",
+     *     message="La limite d'inscription doit se trouver au plus tard au moment de la sortie, pas après..."
+     * )
      */
     private $dateLimiteInscription;
 
     /**
      * @ORM\Column(type="integer")
-     *
      */
     private $nbInscriptionsMax;
 
     /**
      * @ORM\Column(type="text")
-     *
      */
     private $infosSortie;
 
     /**
      * @ORM\ManyToOne(targetEntity=Participant::class, inversedBy="sorties")
-     *
      */
     private $organisateur;
 
     /**
      * @ORM\ManyToMany(targetEntity=Participant::class, mappedBy="estInscrit")
-     *
      */
     private $participants;
 
@@ -85,7 +87,6 @@ class Sortie
     /**
      * @ORM\ManyToOne(targetEntity=Etat::class, inversedBy="sortie")
      * @ORM\JoinColumn(nullable=false)
-     *
      */
     private $etat;
 

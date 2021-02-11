@@ -25,6 +25,7 @@ security:
                 path: app_logout
                 # where to redirect after logout
                 # target: app_any_route
+
             #Remember me
             remember_me:
                 secret: '%kernel.secret%'
@@ -37,12 +38,14 @@ security:
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
 
-    # Easy way to control access for large sections of your site
-    # Note: Only the *first* access control that matches will be used
+    #ROLE_USER est défini par défaut pour tous les utilisateurs connectés donc pas besoin de le créer
+    #Création du ROLE_ADMIN qui hérite de tous les pouvoirs du ROLE_USER
     role_hierarchy:
         ROLE_ADMIN: ROLE_USER
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+        #On autorise n'importe qui à se connecter.
+        #Il faut etre connecté pour naviguer sur les autres pages
+        #Le formulaire 'register' n'est accessible que par le ROLE_ADMIN
         - {path: ^/login, roles:}
         - {path: ^/register$, roles: ROLE_ADMIN}
         - { path: ^/, roles: ROLE_USER }

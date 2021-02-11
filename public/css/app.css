@@ -12,6 +12,10 @@ facilement ^^
     font-family: 'Josefin Sans', sans-serif;
 }
 
+body {
+    padding-bottom: 7em;
+}
+
 .bold {
     font-weight: bold;
 }
@@ -34,6 +38,8 @@ form ul > li{
     font-weight: bolder;
     color: crimson;
 }
+/*
+Lignes CSS remplacées par du BootStrap
 
 footer{
     background-color: #110e54;
@@ -53,6 +59,8 @@ header {
     background-color: #110e54;
     color: white;
 }
+
+ */
 
 .img-home {
     width: 50px;

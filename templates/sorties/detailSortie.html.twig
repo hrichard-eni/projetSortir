@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | S'inscrire
+{% endblock %}
+
+{% block main %}
+    <div class="container center">
+        <div class="row">
+            <div class="col-4"></div>
+                <div class="row col-4">
+                    <h1 class="col-12">
+                        {{ sortie.nom }}
+                    </h1>
+                    <div class="col-12 border border-dark">
+                        <h5>Infos :</h5>
+                        {{ sortie.infosSortie }}
+                    </div>
+                    <div class="col-12">
+                        Date : {{ sortie.dateHeureDebut|date('j M Y H:m') }}
+                    </div>
+                    <div class="col-12">
+                        Durée : {{ sortie.duree|date('H:m') }}
+                    </div>
+                    <div class="col-12">
+                        Date limite pour s'inscrire : {{ sortie.dateLimiteInscription|date('j M Y H:m') }}
+                    </div>
+                    <div class="col-12">
+                        Places : {{ sortie.nbInscriptionsMax }}
+                    </div>
+                    <div class="col-12">
+                        Lieu : {{ sortie.lieu.rue }} à {{ sortie.lieu.ville.nom }}
+                    </div>
+                    <div class="col-12">
+                        Organisé par : {{ sortie.organisateur.pseudo }}
+                    </div>
+                    <div class="col-12">
+                        Pour le campus de : {{ sortie.campusOrganisateur.nom }}
+                    </div>
+                    <div class="col-12">
+                        ------------------------------------------
+                    </div>
+
+                    <div class="col-4">
+
+                    </div>
+                    <button class="btn btn-secondary col-4">
+                        S'inscrire
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

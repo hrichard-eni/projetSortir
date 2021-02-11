@@ -7,13 +7,7 @@ use App\Form\NewSortieType;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use JMS\Serializer\SerializationContext;
-use JMS\Serializer\SerializerInterface;
-use mysql_xdevapi\Exception;
-use phpDocumentor\Reflection\DocBlock\Serializer;
-use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -56,7 +50,21 @@ class SortiesController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/detail/{id}", name="sorties_detail", requirements={"id": "\d+"})
+     */
+    public function inscription(SortieRepository $sortieRepository, int $id): Response
+    {
+        //Aller chercher en BDD la sortie correspondant à l'id passé dans l'URL
+        $selectedSortie = $sortieRepository->find($id);
 
+        if (!$selectedSortie) {
+            throw $this->createNotFoundException("Cette sortie n'existe pas");
+        }
 
-
+        return $this->render('sorties/detailSortie.html.twig', [
+            "id" => $id,
+            "sortie" => $selectedSortie
+        ]);
+    }
 }

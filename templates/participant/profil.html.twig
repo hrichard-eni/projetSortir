@@ -5,7 +5,11 @@
         <div class="row">
             <h1>Mon profil</h1>
             <div class="col-2">
+                {% if participant.urlAvatar %}
                 <img src="http://localhost/projetsortir/public/profil/small/{{ participant.urlAvatar }}" alt="Avatar du profil">
+                {% else %}
+                <img src="http://localhost/projetsortir/public/img/defaultavatar200.png" alt="Avatar par défaut">
+                {% endif %}
             </div>
             <div id="formParticipant" class="col-10">
                 <p><strong>Email : </strong> {{ app.user.email }}</p>
