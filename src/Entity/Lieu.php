@@ -6,9 +6,11 @@ use App\Repository\LieuRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=LieuRepository::class)
+ * @UniqueEntity(fields="rue", message="Ce lieu est déjà dans la base de données")
  */
 class Lieu
 {
