@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Participant;
 use App\Form\ParticipantFormType;
+use App\Repository\ParticipantRepository;
 use claviska\SimpleImage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,7 +19,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class ParticipantController extends AbstractController
 {
     /**
-     * @Route("/profil/", name="participant_profil")
+     * @Route("/monProfil/", name="participant_profil")
      */
     public function profil(Request $request,
                            EntityManagerInterface $entityManager,
@@ -77,6 +78,24 @@ class ParticipantController extends AbstractController
             ["participant_form" => $form->createView(),
                 "participant" => $participant]);
 
+    }
+
+    /**
+     * @Route("/profil/{id}", name="participant_profilautrui", requirements={"id":"\d+"})
+     */
+    public function profilautrui(ParticipantRepository $participantRepository, int $id)
+    {
+        $participantSelect = $participantRepository->find($id);
+
+        if (!$participantSelect) {
+            //déclencher une 404
+            throw $this->createNotFoundException("Utilisateur inconnu");
+        }
+
+        return $this->render('participant/profilautrui.html.twig', [
+            "id" => $id,
+            "participantSelect" => $participantSelect
+        ]);
     }
 
 
