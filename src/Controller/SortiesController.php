@@ -5,9 +5,15 @@ namespace App\Controller;
 use App\Entity\Sortie;
 use App\Form\NewSortieType;
 use App\Repository\EtatRepository;
+use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use JMS\Serializer\SerializationContext;
+use JMS\Serializer\SerializerInterface;
+use mysql_xdevapi\Exception;
+use phpDocumentor\Reflection\DocBlock\Serializer;
 use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -49,4 +55,8 @@ class SortiesController extends AbstractController
             'newSortie' => $form->createView(),
         ]);
     }
+
+
+
+
 }

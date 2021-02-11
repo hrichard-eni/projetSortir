@@ -28,8 +28,8 @@
         </div>
         <div id="filtres"></div>
         <div id="liste_sorties">
-        <table id="tab_sorties" class="col-12">
-            <thead>
+            <table id="tab_sorties" class="col-12">
+                <thead>
                 <tr>
                     <th class="col-3">Nom de la sortie</th>
                     <th class="col-1">Date de la sortie</th>
@@ -40,11 +40,10 @@
                     <th class="col-2">Organisateur</th>
                     <th class="col-2">Actions</th>
                 </tr>
-            </thead>
-            <tbody>
-                <tr>
+                </thead>
+                <tbody id="lignesSorties">
                     {% for sortie in sorties %}
-
+                    <tr data-id-campus="{{ sortie.campusOrganisateur.id }}">
                     <td class="col-3">{{ sortie.nom }}</td>
                     <td class="col-1">{{ sortie.dateHeureDebut|date('Y-m-d') }}</td>
                     <td class="col-1">{{ sortie.dateLimiteInscription|date('Y-m-d') }}</td>
@@ -53,9 +52,41 @@
                     <td class="col-1">...</td>
                     <td class="col-2">{{ sortie.organisateur.pseudo }}</td>
                     <td class="col-2">...</td>
-                </tr>
-            </tbody>
-            {%  endfor %}
-        </table>
+                    </tr>
+                    {%  endfor %}
+                </tbody>
+
+            </table>
         </div>
+        <script> window.onload=init;
+        var listeCampus;
+        var lignesSorties;
+    function init(){
+        listeCampus = document.getElementById('filtres_sorties_form_campus');
+        lignesSorties = document.getElementById('lignesSorties');
+        let optionAllCampus = document.createElement("option");
+        optionAllCampus.value='0';
+        optionAllCampus.innerText='Tous';
+        listeCampus.prepend(optionAllCampus);
+        listeCampus.value='0';
+        listeCampus.onchange=campusSelect;
+    }
+    function campusSelect() {
+        let idcampus=listeCampus.value;
+
+        let tr_lignesSorties = lignesSorties.children;
+        for(var i=0; i<tr_lignesSorties.length; i++){
+
+            if(tr_lignesSorties[i].dataset.idCampus === idcampus || idcampus==='0'){
+                tr_lignesSorties[i].style="";
+
+            }else
+            {
+                tr_lignesSorties[i].style.display="none";
+            }
+        }
+
+    }
+
+        </script>
     {% endblock%}

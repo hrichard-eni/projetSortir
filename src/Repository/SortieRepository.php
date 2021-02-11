@@ -19,16 +19,7 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
-    public function findByCampus($filtrecampus)
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.campusOrganisateur = filtreCampus')
-            ->setParameter('f', $filtrecampus)
-            ->orderBy('s.nom', 'ASC')
-            ->getQuery()
-            ->getResult()
-            ;
-    }
+
 
 
 
