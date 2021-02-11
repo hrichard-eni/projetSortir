@@ -51,8 +51,8 @@ class Participant implements UserInterface
     private $prenom;
 
     /**
+     * @Assert\Unique
      * @ORM\Column(type="string", length=100)
-     *
      */
     private $pseudo;
 
