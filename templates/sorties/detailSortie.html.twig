@@ -17,13 +17,13 @@
                         {{ sortie.infosSortie }}
                     </div>
                     <div class="col-12">
-                        Date : {{ sortie.dateHeureDebut|date('j M Y H:m') }}
+                        Date : {{ sortie.dateHeureDebut|date('j M Y H:i') }}
                     </div>
                     <div class="col-12">
-                        Durée : {{ sortie.duree|date('H:m') }}
+                        Durée : {{ sortie.duree|date('H:i') }}
                     </div>
                     <div class="col-12">
-                        Date limite pour s'inscrire : {{ sortie.dateLimiteInscription|date('j M Y H:m') }}
+                        Date limite pour s'inscrire : {{ sortie.dateLimiteInscription|date('j M Y H:i') }}
                     </div>
                     <div class="col-12">
                         Places : {{ sortie.nbInscriptionsMax }}
