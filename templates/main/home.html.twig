@@ -50,7 +50,7 @@
                     <td class="col-1">{{ sortie.etat.libelle }}</td>
                     <td class="col-1">...</td>
                     <td class="col-2">{{ sortie.organisateur.pseudo }}</td>
-                    <td class="col-2">...</td>
+                    <td class="col-2"><a href="{{ path('sorties_detail',{id:sortie.id}) }}">S'inscrire</a></td>
                     </tr>
                     {%  endfor %}
                 </tbody>
