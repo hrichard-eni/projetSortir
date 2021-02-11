@@ -24,19 +24,23 @@ class NewSortieType extends AbstractType
             ])
 
             ->add('dateHeureDebut', DateTimeType::class, [
-                'label' => 'Date et heure de la sortie'
+                'label' => 'Date et heure de la sortie',
+                'invalid_message' => 'Ceci n\'est pas une date valide'
             ])
 
             ->add('duree', TimeType::class, [
-                'label' => 'Durée'
+                'label' => 'Durée',
+                'invalid_message' => 'Ceci n\'est pas une durée valide'
             ])
 
             ->add('dateLimiteInscription', DateTimeType::class, [
-                'label' => 'Date de fin d\'inscription'
+                'label' => 'Date de fin d\'inscription',
+                'invalid_message' => 'Ceci n\'est pas une date valide'
             ])
 
             ->add('nbInscriptionsMax', IntegerType::class, [
-                'label' => 'Nombre max de participants'
+                'label' => 'Nombre max de participants',
+                'invalid_message' => 'Ceci n\'est pas un nombre de personnes valide'
             ])
 
             ->add('infosSortie', TextareaType::class, [
@@ -55,7 +59,8 @@ class NewSortieType extends AbstractType
                 'class' => 'App\Entity\Participant',
                 'label' => 'Organisateur',
                 'choice_label' => 'pseudo',
-                'disabled' => true
+                'disabled' => true,
+                'placeholder' => 'Change pas ca marchera pas'
             ])
 
             //Pré-rempli par le controller
@@ -63,7 +68,8 @@ class NewSortieType extends AbstractType
                 'class' => 'App\Entity\Campus',
                 'label' => 'Campus organisateur',
                 'choice_label' => 'nom',
-                'disabled' => true
+                'disabled' => true,
+                'placeholder' => 'Change pas ca marchera pas'
             ])
 
 //            ->add('participants') : Géré sur le détail d'une sortie

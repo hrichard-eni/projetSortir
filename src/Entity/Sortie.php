@@ -7,6 +7,7 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=SortieRepository::class)
@@ -27,6 +28,9 @@ class Sortie
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\Type("datetime")
+     * @Assert\GreaterThan("today",
+     *     message="La date de la sortie doit se trouver dans le futur ! On a pas encore inventé la machine à remonter le temps ^^")
      */
     private $dateHeureDebut;
 
@@ -37,6 +41,13 @@ class Sortie
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\Type("datetime")
+     * @Assert\GreaterThan("today",
+     *     message="La date de fin d'inscription doit se trouver dans le futur sinon personne viendra à ta sortie ^^")
+     * @Assert\Expression(
+     *     "this.getDateHeureDebut() >= this.getDateLimiteInscription()",
+     *     message="La limite d'inscription doit se trouver au plus tard au moment de la sortie, pas après..."
+     * )
      */
     private $dateLimiteInscription;
 
