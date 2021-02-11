@@ -44,6 +44,9 @@ class UserController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
+
+            //On rajoute un petit message si le formulaire soumis est validé
+            $this->addFlash('success', 'Nouvel utilisateur ajouté');
             return $this->redirectToRoute('main_home');
         }
 
