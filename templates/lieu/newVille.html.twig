@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello LieuController!{% endblock %}
+
+{% block main %}
+
+    <div class="container center label-over-input">
+        <h2 class="mb-3">
+            Ajouter une ville
+        </h2>
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4">
+                {{ form(newVille) }}
+            </div>
+            <div class="col-4"></div>
+        </div>
+    </div>
+
+{% endblock %}

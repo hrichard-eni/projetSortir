@@ -15,7 +15,6 @@
             {{ form_start(newSortie) }}
 
             <div class="row">
-{#                {{ form(newSortie) }}#}
                 <div class="col-6">
                     {{ form_row(newSortie.nom) }}
                     {{ form_row(newSortie.dateHeureDebut) }}
@@ -26,6 +25,13 @@
                     {{ form_row(newSortie.duree) }}
                     {{ form_row(newSortie.nbInscriptionsMax) }}
                     {{ form_row(newSortie.lieu) }}
+                    <div>
+                        Le lieu de ta sortie n'est pas dans la liste ?
+                        <a class="btn btn-outline-secondary btn-sm" href="{{ path('lieu_new') }}">
+                            Ajoute le !
+                        </a>
+                    </div>
+
                 </div>
                 <div class="col-6">
                     {{ form_row(newSortie.organisateur) }}

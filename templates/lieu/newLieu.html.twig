@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello LieuController!{% endblock %}
+
+{% block main %}
+
+    <div class="container center label-over-input">
+        <h2 class="mb-2">
+            Ajouter un lieu
+        </h2>
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4">
+                {{ form_start(newLieu) }}
+                
+                {{ form_row(newLieu.nom) }}
+                {{ form_row(newLieu.rue) }}
+
+                <div class="row">
+                    <div class="col-6">
+                        {{ form_row(newLieu.latitude) }}
+                    </div>
+                    <div class="col-6">
+                        {{ form_row(newLieu.longitude) }}
+                    </div>
+                </div>
+
+                {{ form_row(newLieu.ville) }}
+                <div class="mb-3">
+                    Tu ne trouves pas la ville ?
+                    <a class="btn btn-outline-secondary btn-sm" href="{{ path('ville_new') }}">
+                        Ajoute la !
+                    </a>
+                </div>
+                
+                {{ form_end(newLieu) }}
+            </div>
+            <div class="col-4"></div>
+        </div>
+    </div>
+
+{% endblock %}
