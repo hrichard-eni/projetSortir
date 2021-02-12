@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Sortie;
 use App\Form\NewSortieType;
+use App\Form\UpdateSortieType;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
 use ContainerAqVPMxW\getDebug_DumpListenerService;
@@ -76,8 +77,89 @@ class SortiesController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/update/{id}", name="sorties_update", requirements={"id": "\d+"})
+     */
+    public function modifier(Request $request, SortieRepository $sortieRepository, int $id, EntityManagerInterface $entityManager): Response
+    {
+        //Aller chercher en BDD la sortie correspondant à l'id passé dans l'URL
+        $selectedSortie = $sortieRepository->find($id);
 
-    private function calculerDateFin(\DateTime $debut , int $nombre, int $unite) {
+        if (!$selectedSortie) {
+            throw $this->createNotFoundException("Cette sortie n'existe pas");
+        }
+        if ($selectedSortie->getOrganisateur() != $this->getUser()) {
+            $this->addFlash('danger', 'Vous ne pouvez pas modifier une sortie que vous n\'avez pas créé');
+            return $this->redirectToRoute('main_home');
+        }
+
+        $duree = $selectedSortie->getDateHeureDebut()->diff($selectedSortie->getDuree());
+
+        //Pour le remplissage des valeurs non mappées
+        if ($duree->d != 0) {
+            $duree_nb = $duree->d;
+            $duree_unite = 2;
+        } else {
+            $duree_nb = $duree->h;
+            $duree_unite = 1;
+        }
+
+        $form = $this->createForm(UpdateSortieType::class, $selectedSortie, [
+            'nombre' => $duree_nb,
+            'unite' => $duree_unite
+        ]);
+        $form->handleRequest($request);
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            //Hydrater propriétés modifiées dindirectement
+            $duree_nb = $form->get('duree_nombre')->getData(); //Récupère la durée
+            $duree_unite = $form->get('duree_unite')->getData(); //Récupère l'unité de durée
+
+            $fin = $this->calculerDateFin($form->getData()->getDateHeureDebut(), $duree_nb, $duree_unite);
+            $selectedSortie->setDuree($fin);
+
+            //Envoi à la BDD
+            $entityManager->persist($selectedSortie);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Votre sortie a bien été modifiée');
+            return $this->redirectToRoute('sorties_detail', [
+                'id' => $id
+            ]);
+        }
+
+        return $this->render('sorties/updateSortie.html.twig', [
+            'updateSortie' => $form->createView(),
+            'sortie' => $selectedSortie
+        ]);
+    }
+
+    /**
+     * @Route("/suppr/{id}", name="sorties_suppr", requirements={"id": "\d+"})
+     */
+    public function supprimer(SortieRepository $sortieRepository, int $id, EntityManagerInterface $entityManager): Response
+    {
+        //Aller chercher en BDD la sortie correspondant à l'id passé dans l'URL
+        $selectedSortie = $sortieRepository->find($id);
+
+        if (!$selectedSortie) {
+            throw $this->createNotFoundException("Cette sortie n'existe pas");
+        } elseif ($selectedSortie->getOrganisateur() != $this->getUser()) {
+            $this->addFlash('danger', 'Votre ne pouvez pas supprimer une sortie que vous n\'avez pas organisé !');
+            return $this->redirectToRoute('main_home');
+        } else {
+            $entityManager->remove($selectedSortie);
+            $entityManager->flush();
+        }
+
+        $this->addFlash('info', 'Votre sortie à bien été supprimée');
+        return $this->redirectToRoute('main_home');
+    }
+
+
+    private function calculerDateFin(\DateTime $debut, int $nombre, int $unite)
+    {
         //Nombres : correspond
         //Unite : 1 > Heures, 2 > Jours
 
@@ -85,10 +167,10 @@ class SortiesController extends AbstractController
         $fin = clone $debut;
         switch ($unite) {
             case 1:
-                $fin->modify('+'.$nombre.'hours');
+                $fin->modify('+' . $nombre . 'hours');
                 break;
             default:
-                $fin->modify('+'.$nombre.'days');
+                $fin->modify('+' . $nombre . 'days');
                 break;
         }
 

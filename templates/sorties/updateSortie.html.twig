@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | New Sortie !
+{% endblock %}
+
+{% block main %}
+
+    <div class="container center label-over-input justify-content-center">
+
+        <h1 style="margin-top: 30px">
+            Modifiez votre sortie
+        </h1>
+
+        {{ form_start(updateSortie) }}
+
+        <div class="row">
+            <div class="col-6">
+                {{ form_row(updateSortie.nom) }}
+                {{ form_row(updateSortie.dateHeureDebut) }}
+                {{ form_row(updateSortie.infosSortie) }}
+            </div>
+            <div class="col-6">
+                {{ form_row(updateSortie.dateLimiteInscription) }}
+                <div class="row">
+                    <div class="col-3"></div>
+                    <div class="col-3">
+                        {{ form_row(updateSortie.duree_nombre) }}
+                    </div>
+                    <div class="col-3">
+                        {{ form_row(updateSortie.duree_unite) }}
+                    </div>
+                    <div class="col-3"></div>
+
+                </div>
+                {{ form_row(updateSortie.nbInscriptionsMax) }}
+                {{ form_row(updateSortie.lieu) }}
+
+            </div>
+            <div class="col-6">
+                {{ form_row(updateSortie.organisateur) }}
+            </div>
+            <div class="col-6">
+                {{ form_row(updateSortie.campusOrganisateur) }}
+            </div>
+
+            <div class="col-3"></div>
+            <div class="col-2">
+                <button class="btn btn-secondary">Modifier</button>
+            </div>
+            <div class="col-1"></div>
+            <div class="col-3">
+                <a href="{{ path('main_home') }}" class="btn btn-secondary">Annuler</a>
+            </div>
+            <div class="col-3"></div>
+
+        </div>
+
+        {{ form_end(updateSortie) }}
+
+    </div>
+
+{% endblock %}
