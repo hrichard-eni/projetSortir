@@ -6,6 +6,7 @@ use App\Entity\Sortie;
 use App\Form\NewSortieType;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
+use ContainerAqVPMxW\getDebug_DumpListenerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,6 +36,13 @@ class SortiesController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             //Hydrater la propriété état à 'Créé'
             $sortie->setEtat($etatRepository->find(1));
+
+            $duree_nb = $form->get('duree_nombre')->getData(); //Récupère la durée
+            $duree_unite = $form->get('duree_unite')->getData(); //Récupère l'unité de durée
+
+            $fin = $this->calculerDateFin($form->getData()->getDateHeureDebut(), $duree_nb, $duree_unite);
+
+            $sortie->setDuree($fin);
 
             //Envoi à la BDD
             $entityManager->persist($sortie);
@@ -66,5 +74,25 @@ class SortiesController extends AbstractController
             "id" => $id,
             "sortie" => $selectedSortie
         ]);
+    }
+
+
+    private function calculerDateFin(\DateTime $debut , int $nombre, int $unite) {
+        //Nombres : correspond
+        //Unite : 1 > Heures, 2 > Jours
+
+        //On utilise clone sinon $debut se met à jour en même temmps que $fin et la valeur initiale est donc perdue
+        $fin = clone $debut;
+        switch ($unite) {
+            case 1:
+                $fin->modify('+'.$nombre.'hours');
+                break;
+            default:
+                $fin->modify('+'.$nombre.'days');
+                break;
+        }
+
+        return $fin; //Qui est devenu la date de fin ^^
+
     }
 }

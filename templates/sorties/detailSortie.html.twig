@@ -17,16 +17,24 @@
                         {{ sortie.infosSortie }}
                     </div>
                     <div class="col-12">
-                        Date : {{ sortie.dateHeureDebut|date('j M Y H:i') }}
+                        Date : {{ sortie.dateHeureDebut|date('j/m/Y à H:i') }}
                     </div>
                     <div class="col-12">
-                        Durée : {{ sortie.duree|date('H:i') }}
+                        {# Affichage en fonction de la durée #}
+                        {% set difference = date(sortie.duree).diff(date(sortie.dateHeureDebut)) %}
+                        {% set hours = difference.h %}
+                        {% set days = difference.days %}
+                        {% if days == 0 %}
+                            Durée : {{ hours }} Heures
+                        {% else %}
+                            Durée : {{ days }} Jours
+                        {% endif %}
                     </div>
                     <div class="col-12">
-                        Date limite pour s'inscrire : {{ sortie.dateLimiteInscription|date('j M Y H:i') }}
+                        Date limite pour s'inscrire : {{ sortie.dateLimiteInscription|date('j/m/Y à H:i') }}
                     </div>
                     <div class="col-12">
-                        Places : {{ sortie.nbInscriptionsMax }}
+                        Places restantes : {{ sortie.nbInscriptionsMax }}{# - {{ sortie.participant.length ou un truc du genre }} #}
                     </div>
                     <div class="col-12">
                         Lieu : {{ sortie.lieu.rue }} à {{ sortie.lieu.ville.nom }}
