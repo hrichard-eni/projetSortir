@@ -32,7 +32,7 @@ class MainController extends AbstractController
 
         return $this->render('main/home.html.twig', [
             "sorties" => $sorties,
-            "campus_form" => $form->createView()
+            "filtre_form" => $form->createView()
         ]);
 
 

@@ -7,10 +7,11 @@
         <div id="filtres_sorties" class="row justify-content-center g-0">
             <div id="filtres_champs" class="col-10">
                 <div id="filtre_campus" class ="col-4">
-                    {{ form_start(campus_form, {attr: {'novalidate': 'novalidate'}}) }}
-                    {{ form_label(campus_form.campus) }}
-                    {{ form_widget(campus_form.campus) }}
-                    {{ form_end(campus_form) }}
+                    {{ form_start(filtre_form, {attr: {'novalidate': 'novalidate'}}) }}
+                    {{ form_label(filtre_form.campus) }}
+                    {{ form_widget(filtre_form.campus) }}
+                    {{ form_end(filtre_form) }}
+                    <button id="rechercheFiltre" onclick="rechercheSorties()">Rechercher</button>
                 </div>
 
             </div>
@@ -42,7 +43,10 @@
                 </thead>
                 <tbody id="lignesSorties">
                     {% for sortie in sorties %}
-                    <tr data-id-campus="{{ sortie.campusOrganisateur.id }}">
+
+                    <tr data-id-campus="{{ sortie.campusOrganisateur.id }}"
+                        data-date-debut="{{ sortie.dateHeureDebut|date("m/d/Y", "Europe/Paris")}}"
+                        data-date-fin="{{ sortie.dateLimiteInscription|date("m/d/Y", "Europe/Paris")}}">
                     <td class="col-3">{{ sortie.nom }}</td>
                     <td class="col-1">{{ sortie.dateHeureDebut|date('Y-m-d') }}</td>
                     <td class="col-1">{{ sortie.dateLimiteInscription|date('Y-m-d') }}</td>
@@ -57,11 +61,30 @@
 
             </table>
         </div>
-        <script> window.onload=init;
+        <script>
+
+            window.onload=init;
         var listeCampus;
         var lignesSorties;
+        var dateDebut;
+        var anneeDateDebut;
+        var moisDateDebut;
+        var jourDateDebut;
+        var dateFin;
+        var anneeDateFin;
+        var moisDateFin;
+        var jourDateFin;
+
     function init(){
         listeCampus = document.getElementById('filtres_sorties_form_campus');
+        dateDebut = document.getElementById('filtres_sorties_form_dateDebut');
+        anneeDateDebut = document.getElementById('filtres_sorties_form_dateDebut_year');
+        moisDateDebut = document.getElementById('filtres_sorties_form_dateDebut_month');
+        jourDateDebut = document.getElementById('filtres_sorties_form_dateDebut_day');
+        dateFin = document.getElementById('filtres_sorties_form_dateFin');
+        anneeDateFin = document.getElementById('filtres_sorties_form_dateFin_year');
+        moisDateFin = document.getElementById('filtres_sorties_form_dateFin_month');
+        jourDateFin = document.getElementById('filtres_sorties_form_dateFin_day');
         lignesSorties = document.getElementById('lignesSorties');
         let optionAllCampus = document.createElement("option");
         optionAllCampus.value='0';
@@ -69,26 +92,72 @@
         listeCampus.prepend(optionAllCampus);
         listeCampus.value='0';
         listeCampus.onchange=campusSelect;
+        dateDebut.onchange=dateDebutSelect;
+        dateFin.onchange=dateFinSelect;
     }
+
+    function rechercheSorties() {
+
+        campusSelect();
+        dateDebutSelect();
+        dateFinSelect();
+
+            }
+
+
     function campusSelect() {
-        let idcampus=listeCampus.value;
+        let idcampus = listeCampus.value;
 
         let tr_lignesSorties = lignesSorties.children;
-        for(var i=0; i<tr_lignesSorties.length; i++){
+        for (var i = 0; i < tr_lignesSorties.length; i++) {
 
-            if(tr_lignesSorties[i].dataset.idCampus === idcampus || idcampus==='0'){
-                tr_lignesSorties[i].style="";
+            if (tr_lignesSorties[i].dataset.idCampus === idcampus || idcampus === '0') {
+                tr_lignesSorties[i].style = "";
 
+            } else {
+                tr_lignesSorties[i].style.display = "none";
+            }
+        }
+    }
+
+    function dateDebutSelect() {
+        let debutSelect = new Date(anneeDateDebut.value, moisDateDebut.value-1, jourDateDebut.value);
+        let tr_lignesSorties = lignesSorties.children;
+
+        console.log(debutSelect);
+
+        for (var i=0; i<tr_lignesSorties.length; i++) {
+            let debutSortie = new Date(tr_lignesSorties[i].dataset.dateDebut);
+            console.log(tr_lignesSorties[i].dataset.dateDebut);
+
+            if(debutSortie >= debutSelect) {
+                tr_lignesSorties[i].style = "";
             }else
             {
                 tr_lignesSorties[i].style.display="none";
             }
         }
-
-
-
-
     }
+
+    function dateFinSelect() {
+        let finSelect = new Date(anneeDateFin.value, moisDateFin.value-1, jourDateFin.value);
+        let tr_lignesSorties = lignesSorties.children;
+
+        console.log(finSelect);
+
+        for (var i=0; i<tr_lignesSorties.length; i++) {
+            let finSortie = new Date(tr_lignesSorties[i].dataset.dateFin);
+            console.log(tr_lignesSorties[i].dataset.dateFin);
+
+            if(finSortie >= finSelect) {
+                tr_lignesSorties[i].style = "";
+            }else
+            {
+                tr_lignesSorties[i].style.display="none";
+            }
+        }
+    }
+
 
         </script>
     {% endblock%}
