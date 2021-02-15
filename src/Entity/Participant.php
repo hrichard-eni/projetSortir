@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ParticipantRepository::class)
- * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @UniqueEntity(fields={"email", "pseudo"}, message="There is already an account with this email")
  */
 class Participant implements UserInterface
 {
@@ -51,7 +51,6 @@ class Participant implements UserInterface
     private $prenom;
 
     /**
-     * @Assert\Unique
      * @ORM\Column(type="string", length=100)
      */
     private $pseudo;
