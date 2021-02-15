@@ -40,7 +40,26 @@ class ParticipantSortieController extends AbstractController
         return $this->redirectToRoute("sorties_detail", ['id'=> $id]);
             }
 
+    /**
+     * @Route("/desinscriptionSortie/{id}", name="desinscription_sortie",methods={"GET"}, requirements={"id": "\d+"})
+     * @return string
+     */
+    public function retirerParticipant($id, EntityManagerInterface $entityManager): Response
+    {
 
+        //qui est le participant ?
+        $user = $this->getUser();
+
+        $participantsortie = $entityManager->getRepository(Participant::class)->find($user->getId());
+        $sortieSelectionnee = $entityManager->getRepository(Sortie::class)->find($id);
+
+        //j'appelle la methode prévue par l'entity Sortie
+        $sortieSelectionnee->removeParticipant($participantsortie);
+        $entityManager->persist($sortieSelectionnee);
+        $entityManager->flush();
+        $this->addFlash('success', 'Désinscription réussie');
+        return $this->redirectToRoute("sorties_detail", ['id'=> $id]);
+    }
 
 
 

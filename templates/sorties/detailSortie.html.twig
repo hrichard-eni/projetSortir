@@ -80,11 +80,13 @@
 
                     <div class="col-4"></div>
                 {% endif %}
-                {% if (estInscrit == false) and (sortie.etat.id == 2) %}
+                {% if (estInscrit == false) and (sortie.etat.id == 2)  %}
                     <div class="col-4"></div>
-                    <a href="{{ path('sorties_detail',{id:sortie.id}) }}" class="btn btn-secondary col-4 mt-2">
+                    <a href="{{ path('inscription_sortie',{id:sortie.id}) }}" class="btn btn-secondary col-4 mt-2">
                         S'inscrire
                     </a>
+                    {% else %}<a href="{{ path('desinscription_sortie',{id:sortie.id}) }}" class="btn btn-secondary col-4 mt-2">
+                            Se désister</a>
                 {% endif %}
             </div>
         </div>
