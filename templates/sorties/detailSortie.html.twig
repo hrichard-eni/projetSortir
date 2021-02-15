@@ -6,48 +6,49 @@
 
 {% block main %}
     <div class="container center">
-        <div class="row">
-            <div class="col-4"></div>
-                <div class="row col-4">
-                    <h1 class="col-12">
-                        {{ sortie.nom }}
-                    </h1>
-                    <div class="col-12 border border-dark">
-                        <h5>Infos :</h5>
-                        {{ sortie.infosSortie }}
-                    </div>
-                    <div class="col-12">
-                        Date : {{ sortie.dateHeureDebut|date('j/m/Y à H:i') }}
-                    </div>
-                    <div class="col-12">
-                        {# Affichage en fonction de la durée #}
-                        {% set difference = date(sortie.duree).diff(date(sortie.dateHeureDebut)) %}
-                        {% set hours = difference.h %}
-                        {% set days = difference.days %}
-                        {% if days == 0 %}
-                            Durée : {{ hours }} Heures
-                        {% else %}
-                            Durée : {{ days }} Jours
-                        {% endif %}
-                    </div>
-                    <div class="col-12">
-                        Date limite pour s'inscrire : {{ sortie.dateLimiteInscription|date('j/m/Y à H:i') }}
-                    </div>
-                    <div class="col-12">
-                        Places restantes : {{ sortie.nbInscriptionsMax }}{# - {{ sortie.participant.length ou un truc du genre }} #}
-                    </div>
-                    <div class="col-12">
-                        Lieu : {{ sortie.lieu.rue }} à {{ sortie.lieu.ville.nom }}
-                    </div>
-                    <div class="col-12">
-                        Organisé par : {{ sortie.organisateur.pseudo }}
-                    </div>
-                    <div class="col-12">
-                        Pour le campus de : {{ sortie.campusOrganisateur.nom }}
-                    </div>
-                    <div class="col-12">
-                        ------------------------------------------
-                    </div>
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="row col-4">
+            <h1 class="col-12">
+                {{ sortie.nom }}
+            </h1>
+            <div class="col-12 border border-dark">
+                <h5>Infos :</h5>
+                {{ sortie.infosSortie }}
+            </div>
+            <div class="col-12">
+                Date : {{ sortie.dateHeureDebut|date('j/m/Y à H:i') }}
+            </div>
+            <div class="col-12">
+                {# Affichage en fonction de la durée #}
+                {% set difference = date(sortie.duree).diff(date(sortie.dateHeureDebut)) %}
+                {% set hours = difference.h %}
+                {% set days = difference.days %}
+                {% if days == 0 %}
+                    Durée : {{ hours }} Heures
+                {% else %}
+                    Durée : {{ days }} Jours
+                {% endif %}
+            </div>
+            <div class="col-12">
+                Date limite pour s'inscrire : {{ sortie.dateLimiteInscription|date('j/m/Y à H:i') }}
+            </div>
+            <div class="col-12">
+                Places restantes
+                : {{ sortie.nbInscriptionsMax - sortie.participants|length }}{# - {{ sortie.participant.length ou un truc du genre }} #}
+            </div>
+            <div class="col-12">
+                Lieu : {{ sortie.lieu.rue }} à {{ sortie.lieu.ville.nom }}
+            </div>
+            <div class="col-12">
+                Organisé par : {{ sortie.organisateur.pseudo }}
+            </div>
+            <div class="col-12">
+                Pour le campus de : {{ sortie.campusOrganisateur.nom }}
+            </div>
+            <div class="col-12">
+                ------------------------------------------
+            </div>
 
             <div class="row">
                 {% if sortie.organisateur == app.user %}
@@ -56,22 +57,18 @@
                         Modifier
                     </a>
                     <div class="col-2"></div>
-                    <button class="btn btn-secondary col-4">
+                    <a href="{{ path('sorties_publish', {'id': sortie.id}) }}" class="btn btn-secondary col-4">
                         Publier
-                    </button>
+                    </a>
                     <div class="col-4"></div>
                     <a href="{{ path('sorties_suppr', {'id': sortie.id}) }}" class="btn btn-secondary col-4 mt-2">
                         Supprimer
                     </a>
-                {% else %}
-                    {% if (estInscrit == false) %}
-                        <a href="{{ path('sorties_detail',{id:sortie.id}) }}">
-                            S'inscrire
-                        </a>
-                    {% endif %}
-
-                        {{ sortie.participants }}
-                    {% endfor %}
+                {% endif %}
+                {% if (estInscrit == false) %}
+                    <a href="{{ path('sorties_detail',{id:sortie.id}) }}">
+                        S'inscrire
+                    </a>
                 {% endif %}
             </div>
         </div>
