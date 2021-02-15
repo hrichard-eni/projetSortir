@@ -35,7 +35,6 @@
                 </thead>
                 <tbody id="lignesSorties">
                     {% for sortie in sorties %}
-
                     <tr data-id-campus="{{ sortie.campusOrganisateur.id }}"
                         data-date-debut="{{ sortie.dateHeureDebut|date("m/d/Y", "Europe/Paris")}}"
                         data-date-fin="{{ sortie.dateLimiteInscription|date("m/d/Y", "Europe/Paris")}}"
@@ -46,16 +45,22 @@
                     <td class="col-1">{{ sortie.participants|length }}/{{ sortie.nbInscriptionsMax }}</td>
                     <td class="col-1">{{ sortie.etat.libelle }}</td>
                     <td class="col-1">{% for participant in sortie.participants %}
-                            {% if participant.id != null and participant.id == app.user.id %}
+                                            {% if participant.id != null and participant.id == app.user.id %}
                             X
-                            {% endif %}
-                    {% endfor %}</td>
+                                            {% endif %}
+                                     {% endfor %}
+                    </td>
                     <td class="col-2">{{ sortie.organisateur.pseudo }}</td>
-                    <td class="col-2"><a href="{{ path('sorties_detail',{id:sortie.id}) }}">S'inscrire</a></td>
+                    <td class="col-2">
+                            {% if sortie.isParticipant (app.user.id)  %}
+                                    <a href="{{ path('desinscription_sortie',{id:sortie.id}) }}">Se désister</a>
+                            {% else %}
+                                    <a href="{{ path('inscription_sortie',{id:sortie.id}) }}">S'inscrire</a>
+                            {% endif %}
+                    </td>
                     </tr>
                     {%  endfor %}
                 </tbody>
-
             </table>
         </div>
         <script>

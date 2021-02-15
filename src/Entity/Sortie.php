@@ -253,5 +253,19 @@ class Sortie
 
         return $this;
     }
-
+// Permet d'afficher dans le tableau soit "s'inscrire" soit "se desister"
+        public function isParticipant ($participant ) : bool
+        {
+        $present=false;
+        $i=0;
+        while($i<count($this->participants) && !$present)
+        {
+            if ($this->participants[$i]->getId()===$participant)
+            {
+                $present=true;
+            }
+            $i++;
+        }
+        return $present;
+        }
 }
