@@ -11,6 +11,7 @@ class Filtre
     public $campus;
     public $dateDebut;
     public $dateFin;
+    public $isOrganisateur;
 
     /**
      * @return mixed
@@ -58,6 +59,22 @@ class Filtre
     public function setDateFin($dateFin): void
     {
         $this->dateFin = $dateFin;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsOrganisateur()
+    {
+        return $this->isOrganisateur;
+    }
+
+    /**
+     * @param mixed $isOrganisateur
+     */
+    public function setIsOrganisateur($isOrganisateur): void
+    {
+        $this->isOrganisateur = $isOrganisateur;
     }
 
 }

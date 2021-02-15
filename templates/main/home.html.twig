@@ -11,21 +11,13 @@
                     {{ form_label(filtre_form.campus) }}
                     {{ form_widget(filtre_form.campus) }}
                     {{ form_end(filtre_form) }}
-                    <button id="rechercheFiltre" onclick="rechercheSorties()">Rechercher</button>
+                    <button id="rechercheFiltre" class="btn btn-primary" style="margin-bottom: 1em;" onclick="rechercheSorties()">Rechercher</button>
                 </div>
 
             </div>
 
-
-
-
         </div>
 
-        <div id="barre_nav" class = "row justify-content-end g-0">
-            <div class="col-1">Villes</div>
-            <div class="col-1">Campus</div>
-            <div class="col-1"></div>
-        </div>
         <div id="filtres"></div>
         <div id="liste_sorties" class="row justify-content-center g-0">
             <table id="tab_sorties" class="col-10">
@@ -46,7 +38,8 @@
 
                     <tr data-id-campus="{{ sortie.campusOrganisateur.id }}"
                         data-date-debut="{{ sortie.dateHeureDebut|date("m/d/Y", "Europe/Paris")}}"
-                        data-date-fin="{{ sortie.dateLimiteInscription|date("m/d/Y", "Europe/Paris")}}">
+                        data-date-fin="{{ sortie.dateLimiteInscription|date("m/d/Y", "Europe/Paris")}}"
+                        data-organisateur-id="{{ sortie.organisateur.id }}">
                     <td class="col-3">{{ sortie.nom }}</td>
                     <td class="col-1">{{ sortie.dateHeureDebut|date('Y-m-d') }}</td>
                     <td class="col-1">{{ sortie.dateLimiteInscription|date('Y-m-d') }}</td>
@@ -74,8 +67,12 @@
         var anneeDateFin;
         var moisDateFin;
         var jourDateFin;
+        var isOrganisateur;
+        var idUser = {{ app.user.id }};
 
     function init(){
+
+        //On indique à JS les éléments à cibler pour le système de filtre via les ID générées par le form Symfony
         listeCampus = document.getElementById('filtres_sorties_form_campus');
         dateDebut = document.getElementById('filtres_sorties_form_dateDebut');
         anneeDateDebut = document.getElementById('filtres_sorties_form_dateDebut_year');
@@ -85,15 +82,27 @@
         anneeDateFin = document.getElementById('filtres_sorties_form_dateFin_year');
         moisDateFin = document.getElementById('filtres_sorties_form_dateFin_month');
         jourDateFin = document.getElementById('filtres_sorties_form_dateFin_day');
+        isOrganisateur = document.getElementById('filtres_sorties_form_isOrganisateur');
+
         lignesSorties = document.getElementById('lignesSorties');
         let optionAllCampus = document.createElement("option");
         optionAllCampus.value='0';
         optionAllCampus.innerText='Tous';
         listeCampus.prepend(optionAllCampus);
         listeCampus.value='0';
+
+        // Dès que l'utilisateur effectue une modification sur le formulaire de filtre, on appelle les fonctions liées
         listeCampus.onchange=campusSelect;
         dateDebut.onchange=dateDebutSelect;
         dateFin.onchange=dateFinSelect;
+
+        isOrganisateur.addEventListener('change', (event) => {
+            if (event.currentTarget.checked) {
+                organisateurSelect(idUser)
+            }
+            else campusSelect();
+        })
+
     }
 
     function rechercheSorties() {
@@ -124,11 +133,8 @@
         let debutSelect = new Date(anneeDateDebut.value, moisDateDebut.value-1, jourDateDebut.value);
         let tr_lignesSorties = lignesSorties.children;
 
-        console.log(debutSelect);
-
         for (var i=0; i<tr_lignesSorties.length; i++) {
             let debutSortie = new Date(tr_lignesSorties[i].dataset.dateDebut);
-            console.log(tr_lignesSorties[i].dataset.dateDebut);
 
             if(debutSortie >= debutSelect) {
                 tr_lignesSorties[i].style = "";
@@ -143,19 +149,36 @@
         let finSelect = new Date(anneeDateFin.value, moisDateFin.value-1, jourDateFin.value);
         let tr_lignesSorties = lignesSorties.children;
 
-        console.log(finSelect);
-
         for (var i=0; i<tr_lignesSorties.length; i++) {
             let finSortie = new Date(tr_lignesSorties[i].dataset.dateFin);
-            console.log(tr_lignesSorties[i].dataset.dateFin);
 
-            if(finSortie >= finSelect) {
+            if(finSortie <= finSelect) {
                 tr_lignesSorties[i].style = "";
             }else
             {
                 tr_lignesSorties[i].style.display="none";
             }
         }
+    }
+
+    function organisateurSelect(idUser) {
+        let tr_lignesSorties = lignesSorties.children;
+
+        console.log(idUser);
+
+        for (var i=0; i<tr_lignesSorties.length; i++) {
+            console.log(tr_lignesSorties[i].dataset.organisateurId);
+
+            if(idUser == tr_lignesSorties[i].dataset.organisateurId ) {
+                tr_lignesSorties[i].style = "";
+            }else
+            {
+                tr_lignesSorties[i].style.display="none";
+            }
+
+        }
+
+
     }
 
 

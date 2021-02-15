@@ -6,6 +6,7 @@ namespace App\Form;
 use App\Entity\Campus;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -27,6 +28,10 @@ class FiltresSortiesFormType extends AbstractType
             ->add('dateFin', DateType::class, [
                 'widget' => 'choice',
                 'label' => "Date de fin d'inscription"
+            ])
+            ->add('isOrganisateur', CheckboxType::class, [
+                'label' => "Sorties dont je suis l'organisateur",
+                'required' => false,
             ])
             ;
 
