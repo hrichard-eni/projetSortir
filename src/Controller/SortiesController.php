@@ -7,7 +7,7 @@ use App\Form\NewSortieType;
 use App\Form\UpdateSortieType;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
-use ContainerAqVPMxW\getDebug_DumpListenerService;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -65,28 +65,56 @@ class SortiesController extends AbstractController
     /**
      * @Route("/detail/{id}", name="sorties_detail", requirements={"id": "\d+"})
      */
-    public function inscription(SortieRepository $sortieRepository, int $id): Response
+    public function detail(SortieRepository $sortieRepository,
+                           EtatRepository $etatRepository, int $id,
+                           EntityManagerInterface $entityManager): Response
     {
         //Aller chercher en BDD la sortie correspondant à l'id passé dans l'URL
         $selectedSortie = $sortieRepository->find($id);
+
+        //Mettre à jour l'état de la sortie
+        if ($selectedSortie->getEtat() != $etatRepository->find(1)
+            && $selectedSortie->getEtat() != $etatRepository->find(6)) {
+
+            if ($selectedSortie->getDuree() < new DateTime()) {
+                //Date de fin passée -> PA
+                $selectedSortie->setEtat($etatRepository->find(5));
+
+            } elseif ($selectedSortie->getDateHeureDebut() < new DateTime()) {
+                //Date de début passée -> EC
+                $selectedSortie->setEtat($etatRepository->find(4));
+
+            } elseif ($selectedSortie->getDateLimiteInscription() < new DateTime()
+                || sizeof($selectedSortie->getParticipants()) >= $selectedSortie->getNbInscriptionsMax()) {
+                //Date limite d'inscription passée OU nombre max de participants -> CL
+                $selectedSortie->setEtat($etatRepository->find(3));
+
+            } elseif (sizeof($selectedSortie->getParticipants()) < $selectedSortie->getNbInscriptionsMax()) {
+                //Si les condidtions précédentes ne sont pas remplies et
+                //qu'il reste de la place (cas du desistement) -> OU
+                $selectedSortie->setEtat($etatRepository->find(2));
+            }
+            $entityManager->persist($selectedSortie);
+            $entityManager->flush();
+        }
 
         //récupérer la liste des participants
         $participants = $selectedSortie->getParticipants()->toArray();
         //dd($participants->getId());
 
         //récupérer l'id de l'user
-        $user=$this->getUser()->getId();
+        $user = $this->getUser()->getId();
 
         //Créer un tableau des Id des participants à la sortie
         $participantsId = [];
 
         //vérifier si l'Id de l'user fait partie des Id des participants à la sortie
         //Cela permet ensuite dans le detail de la sortie d'afficher ou non le bouton s'inscrire
-        foreach ($participants as $p){
+        foreach ($participants as $p) {
             array_push($participantsId, $p->getId());
         }
-        $estInscrit=false;
-        $estInscrit=in_array($user, $participantsId)? true : false;
+        $estInscrit = false;
+        $estInscrit = in_array($user, $participantsId) ? true : false;
 
         if (!$selectedSortie) {
             throw $this->createNotFoundException("Cette sortie n'existe pas");
@@ -95,7 +123,7 @@ class SortiesController extends AbstractController
         return $this->render('sorties/detailSortie.html.twig', [
             "id" => $id,
             "sortie" => $selectedSortie,
-            "estInscrit"=>$estInscrit
+            "estInscrit" => $estInscrit
         ]);
     }
 
@@ -182,7 +210,7 @@ class SortiesController extends AbstractController
         }
 
         $this->addFlash('info', 'Votre sortie à bien été publiée');
-        return $this->redirectToRoute('main_home');
+        return $this->redirectToRoute("sorties_detail", ['id' => $id]);
     }
 
     /**
@@ -200,7 +228,7 @@ class SortiesController extends AbstractController
         } elseif ($selectedSortie->getOrganisateur() != $this->getUser()) {
             $this->addFlash('danger', 'Votre ne pouvez pas annuler une sortie que vous n\'avez pas organisé !');
             return $this->redirectToRoute('main_home');
-        } elseif ($selectedSortie->getEtat() == $etatRepository->find(2)) {
+        } elseif ($selectedSortie->getEtat() == $etatRepository->find(6)) {
             $this->addFlash('danger', 'Votre ne pouvez pas annuler une sortie déjà annulée');
             return $this->redirectToRoute('main_home');
         } else {
@@ -210,7 +238,35 @@ class SortiesController extends AbstractController
         }
 
         $this->addFlash('info', 'Votre sortie à bien été annulée');
-        return $this->redirectToRoute('main_home');
+        return $this->redirectToRoute("sorties_detail", ['id' => $id]);
+    }
+
+    /**
+     * @Route("/recreate/{id}", name="sorties_recreate", requirements={"id": "\d+"})
+     */
+    public function recreer(SortieRepository $sortieRepository,
+                            EtatRepository $etatRepository, int $id,
+                            EntityManagerInterface $entityManager): Response
+    {
+        //Aller chercher en BDD la sortie correspondant à l'id passé dans l'URL
+        $selectedSortie = $sortieRepository->find($id);
+
+        if (!$selectedSortie) {
+            throw $this->createNotFoundException("Cette sortie n'existe pas");
+        } elseif ($selectedSortie->getOrganisateur() != $this->getUser()) {
+            $this->addFlash('danger', 'Votre ne pouvez pas recréer une sortie que vous n\'avez pas organisé !');
+            return $this->redirectToRoute('main_home');
+        } elseif ($selectedSortie->getEtat() != $etatRepository->find(6)) {
+            $this->addFlash('danger', 'Votre ne pouvez pas recréer une sortie déjà créée');
+            return $this->redirectToRoute('main_home');
+        } else {
+            $selectedSortie->setEtat($etatRepository->find(1));
+            $entityManager->persist($selectedSortie);
+            $entityManager->flush();
+        }
+
+        $this->addFlash('info', 'Votre sortie à bien été recréée, publiez la pour la rendre effective');
+        return $this->redirectToRoute("sorties_detail", ['id' => $id]);
     }
 
     /**
@@ -236,7 +292,7 @@ class SortiesController extends AbstractController
     }
 
 
-    private function calculerDateFin(\DateTime $debut, int $nombre, int $unite)
+    private function calculerDateFin(DateTime $debut, int $nombre, int $unite)
     {
         //Nombres : correspond
         //Unite : 1 > Heures, 2 > Jours
