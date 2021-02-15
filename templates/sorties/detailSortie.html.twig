@@ -53,12 +53,9 @@
 
                     </div>
 
-
-                    <a href="{{ path("inscription_sortie", {"id": sortie.id }) }}">S'inscrire</a>
-                    {% for sorties in sortie %}
-
-                    {{ sortie.participants }}
-                    {% endfor %}
+                    {% if (estInscrit == false) %}
+                        <a href="{{ path('sorties_detail',{id:sortie.id}) }}">S'inscrire</a>
+                    {% endif %}
                 </div>
             </div>
         </div>

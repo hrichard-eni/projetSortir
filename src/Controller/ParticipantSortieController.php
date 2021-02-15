@@ -31,6 +31,7 @@ class ParticipantSortieController extends AbstractController
 
         $participantsortie = $entityManager->getRepository(Participant::class)->find($user->getId());
         $sortieSelectionnee = $entityManager->getRepository(Sortie::class)->find($id);
+
         //j'appelle la methode prévue par l'entity Sortie
              $sortieSelectionnee->addParticipant($participantsortie);
              $entityManager->persist($sortieSelectionnee);

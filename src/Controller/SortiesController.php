@@ -66,13 +66,32 @@ class SortiesController extends AbstractController
         //Aller chercher en BDD la sortie correspondant à l'id passé dans l'URL
         $selectedSortie = $sortieRepository->find($id);
 
+        //récupérer la liste des participants
+        $participants = $selectedSortie->getParticipants()->toArray();
+        //dd($participants->getId());
+
+        //récupérer l'id de l'user
+        $user=$this->getUser()->getId();
+
+        //Créer un tableau des Id des participants à la sortie
+        $participantsId = [];
+
+        //vérifier si l'Id de l'user fait partie des Id des participants à la sortie
+        //Cela permet ensuite dans le detail de la sortie d'afficher ou non le bouton s'inscrire
+        foreach ($participants as $p){
+            array_push($participantsId, $p->getId());
+        }
+        $estInscrit=false;
+        $estInscrit=in_array($user, $participantsId)? true : false;
+
         if (!$selectedSortie) {
             throw $this->createNotFoundException("Cette sortie n'existe pas");
         }
 
         return $this->render('sorties/detailSortie.html.twig', [
             "id" => $id,
-            "sortie" => $selectedSortie
+            "sortie" => $selectedSortie,
+            "estInscrit"=>$estInscrit
         ]);
     }
 
