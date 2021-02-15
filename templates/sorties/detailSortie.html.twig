@@ -64,9 +64,11 @@
                         Supprimer
                     </a>
                 {% else %}
-                    <div class="col-4"></div>
-                    <a href="{{ path("inscription_sortie", {"id": sortie.id }) }}" class="btn btn-secondary col-4">S'inscrire</a>
-                    {% for sorties in sortie %}
+                    {% if (estInscrit == false) %}
+                        <a href="{{ path('sorties_detail',{id:sortie.id}) }}">
+                            S'inscrire
+                        </a>
+                    {% endif %}
 
                         {{ sortie.participants }}
                     {% endfor %}
