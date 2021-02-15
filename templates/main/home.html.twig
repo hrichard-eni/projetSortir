@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} | Home{% endblock %}
+{% block title %} Sortir.com | Home{% endblock %}
 
     {% block main %}
 
@@ -35,10 +35,12 @@
                 </thead>
                 <tbody id="lignesSorties">
                     {% for sortie in sorties %}
+
                     <tr data-id-campus="{{ sortie.campusOrganisateur.id }}"
                         data-date-debut="{{ sortie.dateHeureDebut|date("m/d/Y", "Europe/Paris")}}"
                         data-date-fin="{{ sortie.dateLimiteInscription|date("m/d/Y", "Europe/Paris")}}"
-                        data-organisateur-id="{{ sortie.organisateur.id }}">
+                        data-organisateur-id="{{ sortie.organisateur.id }}"
+                    >
                     <td class="col-3">{{ sortie.nom }}</td>
                     <td class="col-1">{{ sortie.dateHeureDebut|date('Y-m-d') }}</td>
                     <td class="col-1">{{ sortie.dateLimiteInscription|date('Y-m-d') }}</td>
@@ -61,6 +63,7 @@
                     </tr>
                     {%  endfor %}
                 </tbody>
+
             </table>
         </div>
         <script>
@@ -108,6 +111,13 @@
         isOrganisateur.addEventListener('change', (event) => {
             if (event.currentTarget.checked) {
                 organisateurSelect(idUser)
+            }
+            else campusSelect();
+        })
+
+        isInscrit.addEventListener('change', (event) => {
+            if (event.currentTarget.checked) {
+                inscritSelect(idUser)
             }
             else campusSelect();
         })
@@ -183,6 +193,27 @@
             }else
             {
                 tr_lignesSorties[i].style.display="none";
+            }
+
+        }
+    }
+
+    function inscritSelect(idUser) {
+        let tr_lignesSorties = lignesSorties.children;
+
+        console.log(inscritArray);
+
+        for (var i=0; i<tr_lignesSorties.length; i++) {
+
+            for ( var participant of inscritArray) {
+                console.log(participant);
+
+                if (participant && participant == idUser) {
+                    tr_lignesSorties[i].style = "";
+                }else
+                {
+                    tr_lignesSorties[i].style.display="none";
+                }
             }
 
         }

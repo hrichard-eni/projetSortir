@@ -30,9 +30,15 @@ class FiltresSortiesFormType extends AbstractType
                 'label' => "Date de fin d'inscription"
             ])
             ->add('isOrganisateur', CheckboxType::class, [
-                'label' => "Sorties dont je suis l'organisateur",
+                'label' => "Sorties dont je suis l'organisateur/trice",
                 'required' => false,
             ])
+            ->add('isInscrit', CheckboxType::class, [
+                'label' => "Sorties auxquelles je suis inscrit/e",
+                'required' => false,
+            ])
+
+
             ;
 
     }

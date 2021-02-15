@@ -12,6 +12,7 @@ class Filtre
     public $dateDebut;
     public $dateFin;
     public $isOrganisateur;
+    public $isInscrit;
 
     /**
      * @return mixed
@@ -75,6 +76,22 @@ class Filtre
     public function setIsOrganisateur($isOrganisateur): void
     {
         $this->isOrganisateur = $isOrganisateur;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsInscrit()
+    {
+        return $this->isInscrit;
+    }
+
+    /**
+     * @param mixed $isInscrit
+     */
+    public function setIsInscrit($isInscrit): void
+    {
+        $this->isInscrit = $isInscrit;
     }
 
 }
