@@ -30,6 +30,9 @@ class LieuController extends AbstractController
             $entityManager->persist($lieu);
             $entityManager->flush();
 
+            //On rajoute un petit message si le formulaire soumis est validé
+            $this->addFlash('success', 'Lieu ajouté avec succès');
+
             return $this->redirectToRoute('sorties_new');
         }
 
@@ -52,6 +55,9 @@ class LieuController extends AbstractController
             //Pas de propriété manquante donc envoir à la BDD directement
             $entityManager->persist($ville);
             $entityManager->flush();
+
+            //On rajoute un petit message si le formulaire soumis est validé
+            $this->addFlash('success', 'Ville ajoutée avec succès');
 
             return $this->redirectToRoute('lieu_new');
         }

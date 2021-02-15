@@ -49,6 +49,9 @@ class SortiesController extends AbstractController
             $entityManager->persist($sortie);
             $entityManager->flush();
 
+            //On rajoute un petit message si le formulaire soumis est validé
+            $this->addFlash('success', 'Sortie ajoutée avec succès');
+
             //Renvoi sur la page d'accueuil
             return $this->redirectToRoute('main_home');
         }
