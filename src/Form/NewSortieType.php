@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Sortie;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -86,6 +87,13 @@ class NewSortieType extends AbstractType
                 'choice_label' => 'nom',
                 'disabled' => true,
                 'placeholder' => 'Change pas ca marchera pas'
+            ])
+
+            //Publier directement
+            ->add('publish', CheckboxType::class, [
+                'label' => 'Publier directement',
+                'mapped' => false,
+                'invalid_message' => 'Eh le pirate ! Pas touche à notre code !'
             ])
 
 //            ->add('participants') : Géré sur le détail d'une sortie
