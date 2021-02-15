@@ -17,6 +17,12 @@
                 {{ sortie.infosSortie }}
             </div>
             <div class="col-12">
+                ------------------------------------------
+            </div>
+            <strong class="col-12">
+                Etat : {{ sortie.etat.libelle }}
+            </strong>
+            <div class="col-12">
                 Date : {{ sortie.dateHeureDebut|date('j/m/Y à H:i') }}
             </div>
             <div class="col-12">
@@ -57,16 +63,26 @@
                         Modifier
                     </a>
                     <div class="col-2"></div>
-                    <a href="{{ path('sorties_publish', {'id': sortie.id}) }}" class="btn btn-secondary col-4">
-                        Publier
-                    </a>
-                    <div class="col-4"></div>
-                    <a href="{{ path('sorties_suppr', {'id': sortie.id}) }}" class="btn btn-secondary col-4 mt-2">
+                    <a href="{{ path('sorties_suppr', {'id': sortie.id}) }}" class="btn btn-secondary col-4">
                         Supprimer
                     </a>
+                    <div class="col-4"></div>
+
+                    {% if sortie.etat.id == 1 %}
+                        <a href="{{ path('sorties_publish', {'id': sortie.id}) }}" class="btn btn-secondary col-4 mt-2">
+                            Publier
+                        </a>
+                    {% elseif (sortie.etat.id != 6) %}
+                        <a href="{{ path('sorties_cancel', {'id': sortie.id}) }}" class="btn btn-secondary col-4 mt-2">
+                            Annuler
+                        </a>
+                    {% endif %}
+
+                    <div class="col-4"></div>
                 {% endif %}
-                {% if (estInscrit == false) %}
-                    <a href="{{ path('sorties_detail',{id:sortie.id}) }}">
+                {% if (estInscrit == false) and (sortie.etat.id == 2) %}
+                    <div class="col-4"></div>
+                    <a href="{{ path('sorties_detail',{id:sortie.id}) }}" class="btn btn-secondary col-4 mt-2">
                         S'inscrire
                     </a>
                 {% endif %}

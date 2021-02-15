@@ -155,6 +155,62 @@ class SortiesController extends AbstractController
     }
 
     /**
+     * @Route("/publish/{id}", name="sorties_publish", requirements={"id": "\d+"})
+     */
+    public function publier(SortieRepository $sortieRepository,
+                            EtatRepository $etatRepository, int $id,
+                            EntityManagerInterface $entityManager): Response
+    {
+        //Aller chercher en BDD la sortie correspondant à l'id passé dans l'URL
+        $selectedSortie = $sortieRepository->find($id);
+
+        if (!$selectedSortie) {
+            throw $this->createNotFoundException("Cette sortie n'existe pas");
+        } elseif ($selectedSortie->getOrganisateur() != $this->getUser()) {
+            $this->addFlash('danger', 'Votre ne pouvez pas publier une sortie que vous n\'avez pas organisé !');
+            return $this->redirectToRoute('main_home');
+        } elseif ($selectedSortie->getEtat() == $etatRepository->find(2)) {
+            $this->addFlash('danger', 'Votre ne pouvez pas republier une sortie déjà publiée');
+            return $this->redirectToRoute('main_home');
+        } else {
+            $selectedSortie->setEtat($etatRepository->find(2));
+            $entityManager->persist($selectedSortie);
+            $entityManager->flush();
+        }
+
+        $this->addFlash('info', 'Votre sortie à bien été publiée');
+        return $this->redirectToRoute('main_home');
+    }
+
+    /**
+     * @Route("/cancel/{id}", name="sorties_cancel", requirements={"id": "\d+"})
+     */
+    public function annuler(SortieRepository $sortieRepository,
+                            EtatRepository $etatRepository, int $id,
+                            EntityManagerInterface $entityManager): Response
+    {
+        //Aller chercher en BDD la sortie correspondant à l'id passé dans l'URL
+        $selectedSortie = $sortieRepository->find($id);
+
+        if (!$selectedSortie) {
+            throw $this->createNotFoundException("Cette sortie n'existe pas");
+        } elseif ($selectedSortie->getOrganisateur() != $this->getUser()) {
+            $this->addFlash('danger', 'Votre ne pouvez pas annuler une sortie que vous n\'avez pas organisé !');
+            return $this->redirectToRoute('main_home');
+        } elseif ($selectedSortie->getEtat() == $etatRepository->find(2)) {
+            $this->addFlash('danger', 'Votre ne pouvez pas annuler une sortie déjà annulée');
+            return $this->redirectToRoute('main_home');
+        } else {
+            $selectedSortie->setEtat($etatRepository->find(6));
+            $entityManager->persist($selectedSortie);
+            $entityManager->flush();
+        }
+
+        $this->addFlash('info', 'Votre sortie à bien été annulée');
+        return $this->redirectToRoute('main_home');
+    }
+
+    /**
      * @Route("/suppr/{id}", name="sorties_suppr", requirements={"id": "\d+"})
      */
     public function supprimer(SortieRepository $sortieRepository, int $id, EntityManagerInterface $entityManager): Response
