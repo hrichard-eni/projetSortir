@@ -49,15 +49,29 @@
                         ------------------------------------------
                     </div>
 
-                    <div class="col-4">
+            <div class="row">
+                {% if sortie.organisateur == app.user %}
+                    <div class="col-1"></div>
+                    <a href="{{ path('sorties_update', {'id': sortie.id}) }}" class="btn btn-secondary col-4">
+                        Modifier
+                    </a>
+                    <div class="col-2"></div>
+                    <button class="btn btn-secondary col-4">
+                        Publier
+                    </button>
+                    <div class="col-4"></div>
+                    <a href="{{ path('sorties_suppr', {'id': sortie.id}) }}" class="btn btn-secondary col-4 mt-2">
+                        Supprimer
+                    </a>
+                {% else %}
+                    <div class="col-4"></div>
+                    <a href="{{ path("inscription_sortie", {"id": sortie.id }) }}" class="btn btn-secondary col-4">S'inscrire</a>
+                    {% for sorties in sortie %}
 
-                    </div>
-
-                    {% if (estInscrit == false) %}
-                        <a href="{{ path('sorties_detail',{id:sortie.id}) }}">S'inscrire</a>
-                    {% endif %}
-                </div>
+                        {{ sortie.participants }}
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
-
+    </div>
 {% endblock %}

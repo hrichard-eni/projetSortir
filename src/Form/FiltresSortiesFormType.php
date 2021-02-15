@@ -6,6 +6,7 @@ namespace App\Form;
 use App\Entity\Campus;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 
@@ -18,9 +19,17 @@ class FiltresSortiesFormType extends AbstractType
                 'class' =>Campus::class,
                 'choice_label' => 'nom',
                 'multiple' => false,
-                
+            ])
+            ->add('dateDebut', DateType::class, [
+                'widget' => 'choice',
+                'label' => "Date de début"
+            ])
+            ->add('dateFin', DateType::class, [
+                'widget' => 'choice',
+                'label' => "Date de fin d'inscription"
+            ])
+            ;
 
-            ]);
     }
 }
 
