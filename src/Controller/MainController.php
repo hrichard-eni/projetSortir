@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Campus;
+
 use App\Entity\Filtre;
 use App\Form\FiltresSortiesFormType;
 use App\Repository\SortieRepository;
@@ -32,7 +32,8 @@ class MainController extends AbstractController
 
         return $this->render('main/home.html.twig', [
             "sorties" => $sorties,
-            "filtre_form" => $form->createView()
+            "filtre_form" => $form->createView(),
+
         ]);
 
 
