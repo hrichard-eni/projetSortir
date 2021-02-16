@@ -47,5 +47,6 @@ security:
         #Il faut etre connecté pour naviguer sur les autres pages
         #Le formulaire 'register' n'est accessible que par le ROLE_ADMIN
         - {path: ^/login, roles:}
-        - {path: ^/register$, roles: ROLE_ADMIN}
+        - {path: ^/register, roles: ROLE_ADMIN}
+        - {path: ^/archive, roles: ROLE_ADMIN}
         - { path: ^/, roles: ROLE_USER }

@@ -61,7 +61,7 @@
                 ------------------------------------------
             </div>
 
-            <div class="row">
+            <div>
                 {# Pour tout le monde appartenant au campus organisateur #}
                 {% if (estInscrit == false) and (sortie.etat.id == 2) and (app.user.campus == sortie.campusOrganisateur) %}
                     <div class="col-4"></div>
@@ -114,10 +114,11 @@
                         </a>
                         <div class="col-1"></div>
                     {% endif %}
+                    <div class="col-12">
+                        ------------------------------------------
+                    </div>
                 {% endif %}
-                <div class="col-12">
-                    ------------------------------------------
-                </div>
+                <div class="col-12"></div>
                 <div class="col-3"></div>
                 <a href="{{ path('main_home')}}" class="btn btn-secondary col-6 mt-2">
                     Retour à l'accueil
