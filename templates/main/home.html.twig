@@ -24,51 +24,50 @@
                 <thead>
                 <tr>
                     <th class="col-3">Nom de la sortie</th>
-                    <th class="col-1">Date de la sortie</th>
+                    <th class="col-1" >Date de la sortie</th>
                     <th class="col-1">Clôture</th>
                     <th class="col-1">inscrits/places</th>
                     <th class="col-1">Etat</th>
                     <th class="col-1">Inscrit</th>
                     <th class="col-2">Organisateur</th>
-                    <th class="col-2">Actions</th>
+                    <th class="col-2" >Actions</th>
                 </tr>
                 </thead>
                 <tbody id="lignesSorties">
                     {% for sortie in sorties %}
-                    {% if (date("now") < sortie.dateHeureDebut("+1month")) %}
+                    {% if date("now") < sortie.dateHeureDebut()|date_modify("+1month") %}
                     <tr data-id-campus="{{ sortie.campusOrganisateur.id }}"
                         data-date-debut="{{ sortie.dateHeureDebut|date("d/m/Y", "Europe/Paris")}}"
                         data-date-fin="{{ sortie.dateLimiteInscription|date("d/m/Y", "Europe/Paris")}}"
                         data-organisateur-id="{{ sortie.organisateur.id }}"
                     >
-                    <td class="col-3"> <a href="{{ path('sorties_detail', {id:sortie.id })}}">{{ sortie.nom }}</a></td>
-                    <td class="col-1">{{ sortie.dateHeureDebut|date("d/m/Y H:i") }}</td>
-                    <td class="col-1">{{ sortie.dateLimiteInscription|date("d/m/Y H:i") }}</td>
-                    <td class="col-1">{{ sortie.participants|length }}/{{ sortie.nbInscriptionsMax }}</td>
-                    <td class="col-1">{% if (sortie.dateLimiteInscription > date("now")) %}
-                            Ouverte
-                        {% elseif (sortie.dateHeureDebut < date("now")) %}
-                            Passée
-                        {% elseif (sortie.dateLimiteInscription < date("now")) %}
-                            Cloturée
-                        {% endif %}</td>
-                    <td class="col-1">{% for participant in sortie.participants %}
-                                            {% if participant.id != null and participant.id == app.user.id %}
-                            X
-                                            {% endif %}
-                                     {% endfor %}
-                    </td>
-                    <td class="col-2">{{ sortie.organisateur.pseudo }}</td>
-                    <td class="col-2">
-                            {% if sortie.isParticipant (app.user.id) and (sortie.dateLimiteInscription > date("now")) %}
+                        <td class="col-3"> <a href="{{ path('sorties_detail', {id:sortie.id })}}">{{ sortie.nom }}</a></td>
+                        <td class="col-1">{{ sortie.dateHeureDebut|date("d/m/Y H:i") }}</td>
+                        <td class="col-1">{{ sortie.dateLimiteInscription|date("d/m/Y H:i") }}</td>
+                        <td class="col-1">{{ sortie.participants|length }}/{{ sortie.nbInscriptionsMax }}</td>
+                        <td class="col-1">{% if (sortie.dateLimiteInscription > date("now")) %}
+                                Ouverte
+                            {% elseif (sortie.dateHeureDebut < date("now")) %}
+                                Passée
+                            {% elseif (sortie.dateLimiteInscription < date("now")) %}
+                                Cloturée
+                            {% endif %}</td>
+                        <td class="col-1">
+                                {% if sortie.isParticipant (app.user.id) and app.user.id != sortie.organisateur.id%}
+                                    X
+                                {% endif %}
+                        </td>
+                        <td class="col-2">{{ sortie.organisateur.pseudo }}</td>
+                        <td class="col-2">
+                            {% if sortie.isParticipant (app.user.id) and (sortie.dateLimiteInscription > date("now")) and app.user.id != sortie.organisateur.id %}
                                 <a href="{{ path('desinscription_sortie',{id:sortie.id}) }}"><button class="favorite styled"
-                                type="button" style="background-color:darkred">Se désister</button></a>
-                            {% elseif (not sortie.isParticipant (app.user.id)) and (sortie.dateLimiteInscription > date("now")) %}
-                                    <a href="{{ path('inscription_sortie',{id:sortie.id}) }}">
-                                        <button class="favorite styled"
-                                                type="button" style="background-color:darkgreen">S'inscrire</button></a>
+                                                                                                     type="button" style="background-color:darkred">Se désister</button></a>
+                            {% elseif (not sortie.isParticipant (app.user.id)) and (sortie.dateLimiteInscription > date("now")) and app.user.id != sortie.organisateur.id%}
+                                <a href="{{ path('inscription_sortie',{id:sortie.id}) }}">
+                                    <button class="favorite styled"
+                                            type="button" style="background-color:darkgreen">S'inscrire</button></a>
                             {% endif %}
-                    </td>
+                        </td>
                     </tr>
                     {% endif %}
                     {%  endfor %}
