@@ -35,7 +35,7 @@
                 </thead>
                 <tbody id="lignesSorties">
                     {% for sortie in sorties %}
-                    {% if (date("now") < sortie.dateHeureDebut("+1month")) %}
+                    {% if (date("now") < sortie.dateHeureDebut|date_modify("+1month")) %}
                     <tr data-id-campus="{{ sortie.campusOrganisateur.id }}"
                         data-date-debut="{{ sortie.dateHeureDebut|date("d/m/Y", "Europe/Paris")}}"
                         data-date-fin="{{ sortie.dateLimiteInscription|date("d/m/Y", "Europe/Paris")}}"
@@ -49,7 +49,7 @@
                                 Ouverte
                             {% elseif (sortie.dateHeureDebut < date("now")) %}
                                 Passée
-                            {% elseif (sortie.dateLimiteInscription < date("now")) %}
+                            {% elseif (sortie.dateLimiteInscription < date("now")) and (sortie.dateHeureDebut > date("now"))  %}
                                 Cloturée
                             {% endif %}</td>
                         <td class="col-1">
