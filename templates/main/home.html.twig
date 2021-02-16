@@ -61,9 +61,12 @@
                     <td class="col-2">{{ sortie.organisateur.pseudo }}</td>
                     <td class="col-2">
                             {% if sortie.isParticipant (app.user.id) and (sortie.dateLimiteInscription > date("now")) %}
-                                    <a href="{{ path('desinscription_sortie',{id:sortie.id}) }}">Se désister</a>
+                                <a href="{{ path('desinscription_sortie',{id:sortie.id}) }}"><button class="favorite styled"
+                                type="button" style="background-color:darkred">Se désister</button></a>
                             {% elseif (not sortie.isParticipant (app.user.id)) and (sortie.dateLimiteInscription > date("now")) %}
-                                    <a href="{{ path('inscription_sortie',{id:sortie.id}) }}">S'inscrire</a>
+                                    <a href="{{ path('inscription_sortie',{id:sortie.id}) }}">
+                                        <button class="favorite styled"
+                                                type="button" style="background-color:darkgreen">S'inscrire</button></a>
                             {% endif %}
                     </td>
                     </tr>
