@@ -19,6 +19,7 @@ body {
 .bold {
     font-weight: bold;
 }
+
 /*boutons se desister et s'inscrire*/
 .styled {
     border: 0;
@@ -60,10 +61,11 @@ body {
 }
 
 .error,
-form ul > li{
+form ul > li {
     font-weight: bolder;
     color: crimson;
 }
+
 /*
 Lignes CSS remplacées par du BootStrap
 
@@ -132,12 +134,12 @@ table {
 
 /* Tableau home pour smartphone */
 
-@media (max-width: 700px){
+@media (max-width: 700px) {
     .table thead {
         display: none;
     }
 
-    .table tr{
+    .table tr {
         display: block;
         margin-bottom: 40px;
     }
@@ -155,7 +157,6 @@ table {
 }
 
 
-
 textarea {
     resize: none;
 }
@@ -163,4 +164,35 @@ textarea {
 td, th {
     border: thin solid #110e54;
     width: 50%;
+}
+
+/* Affichage de la navbar */
+@media (max-width: 991px) {
+    /* En dessous de 992px de large */
+    #bigscreen {
+        display: none;
+    }
+
+    #burgerbutton, #burgerbar, #homesmall {
+        display: block;
+    }
+}
+
+@media (min-width: 992px) {
+    /* Au dessus de 992px de large */
+    #bigscreen {
+        display: block;
+    }
+
+    #burgerbutton, #burgerbar, #homesmall {
+        display: none;
+    }
+}
+
+#burgerbar > ul > li {
+    list-style: none;
+}
+
+#burgerbar > ul > li > a {
+    text-decoration: none;
 }
