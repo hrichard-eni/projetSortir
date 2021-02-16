@@ -37,13 +37,14 @@
             </span>
             </h1>
         </div>
-        <nav class="navbar navbar-expand-lg navbar-light" style="background-color:#296A6A">
+
+        <nav id="bigscreen" class="navbar navbar-expand-lg navbar-light" style="background-color:#296A6A">
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
                 <ul class="navbar-nav" style="font-size:1.1em;">
                     <li class="nav-item active">
                         <a class="nav-link text-white text-uppercase" href="{{ path('main_home') }}">
                             Home
-                            {# <span class="sr-only"></span> #}
+                            <span class="sr-only"></span>
                         </a>
                     </li>
 
@@ -90,10 +91,61 @@
             </div>
         </nav>
 
+        <div id="burgerbutton" style="position: absolute;right: 0; margin: 5px; z-index: 5; opacity: 40%" onclick="shownav()">
+            <img src="{{ asset('img/burgerbutton.png') }}" alt="">
+        </div>
+
+        <div id="burgerbar" class="center">
+            <ul style="font-size:1.1em; background-color: #296A6A">
+                <li>
+                    <a class="text-white text-uppercase" href="{{ path('main_home') }}">
+                        Home
+                    </a>
+                </li>
+
+                {% if (app.user == null) %}
+                    <li>
+                        <a class="text-white text-uppercase" href="{{ path('app_login') }}">
+                            Login
+                        </a>
+                    </li>
+                {% endif %}
+
+                {% if (app.user and app.user.administrateur == 1) %}
+                    <li>
+                        <a class="text-white text-uppercase" href="{{ path('app_register') }}">
+                            Ajouter utilisateur
+                        </a>
+                    </li>
+                    <li>
+                        <a class="text-white text-uppercase" href="{{ path('archive_dl') }}">
+                            Archives
+                        </a>
+                    </li>
+                {% endif %}
+                {% if (app.user) %}
+                    <li>
+                        <a class="text-white text-uppercase" href="{{ path('sorties_new') }}">
+                            Ajouter une sortie
+                        </a>
+                    </li>
+                    <li>
+                        <a class="text-white text-uppercase" href="{{ path('participant_profil') }}">
+                            Mon profil
+                        </a>
+                    </li>
+                    <li>
+                        <a class="text-white text-uppercase"
+                           href="{{ path('app_logout') }}">
+                            Déconnexion
+                        </a>
+                    </li>
+                {% endif %}
+
+            </ul>
+        </div>
 
     </header>
-
-
 {% endblock %}
 
 {# read and display all flash messages #}
@@ -127,4 +179,30 @@
 
 
 </body>
+<script>
+
+    jQuery(
+        function ($){
+            init();
+
+            function init(){
+                $('#burgerbar').hide();
+                console.log('Page chargée')
+            }
+        }
+    )
+
+    function shownav()
+    {
+        $('#burgerbar').slideDown(500);
+        $('#burgerbutton').attr("onclick", "hidenav()");
+    }
+
+    function hidenav()
+    {
+        $('#burgerbar').slideUp(500);
+        $('#burgerbutton').attr("onclick", "shownav()");
+    }
+
+</script>
 </html>
