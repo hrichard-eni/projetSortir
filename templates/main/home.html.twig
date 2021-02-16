@@ -59,6 +59,7 @@
                             {% else %}
                                     <a href="{{ path('inscription_sortie',{id:sortie.id}) }}">S'inscrire</a>
                             {% endif %}
+                            <a href="{{ path('sorties_detail', {id:sortie.id })}}">Voir la sortie</a>
                     </td>
                     </tr>
                     {%  endfor %}
