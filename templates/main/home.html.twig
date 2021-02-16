@@ -35,17 +35,23 @@
                 </thead>
                 <tbody id="lignesSorties">
                     {% for sortie in sorties %}
-
+                    {% if (date("now") < sortie.dateHeureDebut("+1month")) %}
                     <tr data-id-campus="{{ sortie.campusOrganisateur.id }}"
                         data-date-debut="{{ sortie.dateHeureDebut|date("d/m/Y", "Europe/Paris")}}"
                         data-date-fin="{{ sortie.dateLimiteInscription|date("d/m/Y", "Europe/Paris")}}"
                         data-organisateur-id="{{ sortie.organisateur.id }}"
                     >
-                    <td class="col-3">{{ sortie.nom }}</td>
+                    <td class="col-3"> <a href="{{ path('sorties_detail', {id:sortie.id })}}">{{ sortie.nom }}</a></td>
                     <td class="col-1">{{ sortie.dateHeureDebut|date("d/m/Y H:i") }}</td>
                     <td class="col-1">{{ sortie.dateLimiteInscription|date("d/m/Y H:i") }}</td>
                     <td class="col-1">{{ sortie.participants|length }}/{{ sortie.nbInscriptionsMax }}</td>
-                    <td class="col-1">{{ sortie.etat.libelle }}</td>
+                    <td class="col-1">{% if (sortie.dateLimiteInscription > date("now")) %}
+                            Ouverte
+                        {% elseif (sortie.dateHeureDebut < date("now")) %}
+                            Passée
+                        {% elseif (sortie.dateLimiteInscription < date("now")) %}
+                            Cloturée
+                        {% endif %}</td>
                     <td class="col-1">{% for participant in sortie.participants %}
                                             {% if participant.id != null and participant.id == app.user.id %}
                             X
@@ -59,10 +65,11 @@
                             {% elseif (not sortie.isParticipant (app.user.id)) and (sortie.dateLimiteInscription > date("now")) %}
                                     <a href="{{ path('inscription_sortie',{id:sortie.id}) }}">S'inscrire</a>
                             {% endif %}
-                            <a href="{{ path('sorties_detail', {id:sortie.id })}}">Voir la sortie</a>
                     </td>
                     </tr>
+                    {% endif %}
                     {%  endfor %}
+
                 </tbody>
 
             </table>
