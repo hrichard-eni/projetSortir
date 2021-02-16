@@ -117,7 +117,6 @@ class SortiesController extends AbstractController
             $entityManager->persist($archive);
             $entityManager->flush();
         }
-        dump($archiveRepository->findAll());
 
         //récupérer la liste des participants
         $participants = $selectedSortie->getParticipants()->toArray();
