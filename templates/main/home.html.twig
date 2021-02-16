@@ -58,14 +58,14 @@
                                 {% endif %}
                         </td>
                         <td class="col-2">{{ sortie.organisateur.pseudo }}</td>
-                        <td class="col-2">
+                        <td class="col-2 center">
                             {% if sortie.isParticipant (app.user.id) and (sortie.dateLimiteInscription > date("now")) and app.user.id != sortie.organisateur.id %}
-                                <a href="{{ path('desinscription_sortie',{id:sortie.id}) }}"><button class="favorite styled"
-                                                                                                     type="button" style="background-color:darkred">Se désister</button></a>
+                                <a href="{{ path('desinscription_sortie',{id:sortie.id}) }}"><button class="btn btn-danger"
+                                                                                                     type="button" style="opacity: 80%">Se désister</button></a>
                             {% elseif (not sortie.isParticipant (app.user.id)) and (sortie.dateLimiteInscription > date("now")) and app.user.id != sortie.organisateur.id%}
                                 <a href="{{ path('inscription_sortie',{id:sortie.id}) }}">
-                                    <button class="favorite styled"
-                                            type="button" style="background-color:darkgreen">S'inscrire</button></a>
+                                    <button class="btn btn-success"
+                                            type="button" style="opacity: 80%">S'inscrire</button></a>
                             {% endif %}
                     </td>
                     </tr>
