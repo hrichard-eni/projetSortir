@@ -61,7 +61,9 @@ class SortiesController extends AbstractController
             $this->addFlash('success', 'Sortie ajoutée avec succès');
 
             //Renvoi sur la page d'accueuil
-            return $this->redirectToRoute('main_home');
+            return $this->redirectToRoute('inscription_sortie', [
+                'id' => $sortie->getId()
+            ]);
         }
 
         //Si le formulaire n'est pas soumis affiche ce dernier
