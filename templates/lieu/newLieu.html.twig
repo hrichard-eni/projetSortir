@@ -11,18 +11,18 @@
             Ajouter un lieu
         </h2>
         <div class="row">
-            <div class="col-4"></div>
-            <div class="col-4">
+            <div class="col-1 col-lg-3"></div>
+            <div class="col-10 col-lg-6">
                 {{ form_start(newLieu) }}
 
                 {{ form_row(newLieu.nom) }}
                 {{ form_row(newLieu.rue) }}
 
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-12 col-lg-6">
                         {{ form_row(newLieu.latitude) }}
                     </div>
-                    <div class="col-6">
+                    <div class="col-12 col-lg-6">
                         {{ form_row(newLieu.longitude) }}
                     </div>
                 </div>
@@ -37,7 +37,7 @@
 
                 {{ form_end(newLieu) }}
             </div>
-            <div class="col-4"></div>
+            <div class="col-1 col-lg-3"></div>
         </div>
     </div>
 

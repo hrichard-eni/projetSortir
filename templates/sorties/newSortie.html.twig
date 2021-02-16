@@ -15,12 +15,12 @@
             {{ form_start(newSortie) }}
 
             <div class="row">
-                <div class="col-6">
+                <div class="col-12 col-lg-6">
                     {{ form_row(newSortie.nom) }}
                     {{ form_row(newSortie.dateHeureDebut) }}
                     {{ form_row(newSortie.infosSortie) }}
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-lg-6">
                     {{ form_row(newSortie.dateLimiteInscription) }}
                     <div class="row">
                         <div class="col-3"></div>
@@ -43,10 +43,10 @@
                     </div>
 
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-lg-6">
                     {{ form_row(newSortie.organisateur) }}
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-lg-6">
                     {{ form_row(newSortie.campusOrganisateur) }}
                 </div>
 
@@ -54,10 +54,11 @@
                     {{ form_row(newSortie.publish) }}
                 </div>
 
-                <div class="col-5"></div>
-                <div class="col-2">
+                <div class="col-4 col-lg-5"></div>
+                <div class="col-4 col-lg-2">
                     <button class="btn btn-secondary">Créer une sortie</button>
                 </div>
+                <div class="col-4 col-lg-5"></div>
             </div>
 
             {{ form_end(newSortie) }}

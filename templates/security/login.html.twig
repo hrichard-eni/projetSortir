@@ -4,45 +4,55 @@
 
 {% block main %}
 
-<form class="center little-form" method="post">
+    <form method="post">
+        <div class="container center label-over-input">
+            <div class="row">
+                {% if error %}
+                    <div class="col-12">
+                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                    </div>
+                {% endif %}
 
-    {% if error %}
-        <div>
-            {{ error.messageKey|trans(error.messageData, 'security') }}
+                <h1>
+                    Connexion à Sortir.com
+                </h1>
+
+                <div class="col-12">
+                    <label for="inputEmail">Email</label>
+                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" required autofocus>
+                </div>
+                <div class="col-12">
+                    <label for="inputPassword">Password</label>
+                    <input type="password" name="password" id="inputPassword" required>
+                </div>
+
+                {# Remember Me #}
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <div class="col-2 col-lg-4"></div>
+                <div class="col-8 col-lg-4">
+                    <label>
+                        <input type="checkbox" name="_remember_me" checked> Se souvenir de moi
+                    </label>
+                </div>
+                <div class="col-2 col-lg-4"></div>
+                {# Fin remember me #}
+
+                <div class="col-3 col-lg-5"></div>
+                <button class="btn btn-secondary col-6 col-lg-2">
+                    Sign in
+                </button>
+                <div class="col-3 col-lg-5"></div>
+            </div>
         </div>
-    {% endif %}
-
-    <h1>Connexion à Sortir.com</h1>
-
-    <div>
-        <label for="inputEmail">Email</label>
-        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" required autofocus>
-    </div>
-
-    <div>
-        <label for="inputPassword">Password</label>
-        <input type="password" name="password" id="inputPassword" required>
-    </div>
-
-    {# Remember Me #}
-    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-    <div>
-        <label>
-            <input type="checkbox" name="_remember_me" checked> Se souvenir de moi
-        </label>
-    </div>
-    {# Fin remember me #}
-
-    <button class="btn btn-secondary custom-button">
-        Sign in
-    </button>
-
-</form>
+    </form>
 
     {% if app.user %}
-        <div class="center">
-            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+        <div class="center mt-4">
+            <strong>
+                Info :
+            </strong>
+            Tu es déjà connecté en tant que "{{ app.user.username }}", veux-tu te <a href="{{ path('app_logout') }}">déconnecter</a> ?
         </div>
     {% endif %}
 

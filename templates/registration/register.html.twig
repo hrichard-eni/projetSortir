@@ -6,7 +6,7 @@
 
 {% block main %}
 
-        <div class="container center">
+        <div class="container center label-over-input justify-content-center">
 
             <h1 style="margin-top: 30px">
                 Nouveau participant
@@ -15,25 +15,26 @@
             {{ form_start(register)}}
 
             <div class="row">
-                <div class="col-6">
+                <div class="col-12 col-lg-6">
                     {{ form_row(register.prenom) }}
                     {{ form_row(register.nom) }}
                     {{ form_row(register.pseudo) }}
                     {{ form_row(register.email) }}
                 </div>
 
-                <div class="col-6">
+                <div class="col-12 col-lg-6">
                     {{ form_row(register.telephone) }}
                     {{ form_row(register.campus) }}
                     {{ form_row(register.plainPassword) }}
                 </div>
 
 
-                <div class="col-5">
+                <div class="col-4 col-lg-5">
                 </div>
-                <div class="col-2">
+                <div class="col-4 col-lg-2">
                     <button class="btn btn-secondary">Ajouter ce participant</button>
                 </div>
+                <div class="col-4 col-lg-5"></div>
             </div>
 
             {{ form_end(register)}}
