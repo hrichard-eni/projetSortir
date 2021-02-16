@@ -2,13 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\Archive;
 use App\Entity\Sortie;
 use App\Form\NewSortieType;
 use App\Form\UpdateSortieType;
+use App\Repository\ArchiveRepository;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
+use DateInterval;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\DocBlock\Tags\See;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,7 +74,8 @@ class SortiesController extends AbstractController
      * @Route("/detail/{id}", name="sorties_detail", requirements={"id": "\d+"})
      */
     public function detail(SortieRepository $sortieRepository,
-                           EtatRepository $etatRepository, int $id,
+                           EtatRepository $etatRepository,
+                           ArchiveRepository $archiveRepository, int $id,
                            EntityManagerInterface $entityManager): Response
     {
         //Aller chercher en BDD la sortie correspondant à l'id passé dans l'URL
@@ -78,7 +83,8 @@ class SortiesController extends AbstractController
 
         //Mettre à jour l'état de la sortie
         if ($selectedSortie->getEtat() != $etatRepository->find(1)
-            && $selectedSortie->getEtat() != $etatRepository->find(6)) {
+            && $selectedSortie->getEtat() != $etatRepository->find(6)
+            && $selectedSortie->getEtat() != $etatRepository->find(7)) {
 
             if ($selectedSortie->getDuree() < new DateTime()) {
                 //Date de fin passée -> PA
@@ -101,6 +107,17 @@ class SortiesController extends AbstractController
             $entityManager->persist($selectedSortie);
             $entityManager->flush();
         }
+        if ($selectedSortie->getEtat() == $etatRepository->find(5)
+            && $selectedSortie->getDuree() <= date_add(new DateTime(), new DateInterval('P1M'))) {
+            //Passer l'état de la sortie à 'Archivée'
+            $selectedSortie->setEtat($etatRepository->find(7));
+            //Ajout de la sortie dans la table d'archive
+            $archive = new Archive();
+            $archive->setSortie($selectedSortie);
+            $entityManager->persist($archive);
+            $entityManager->flush();
+        }
+        dump($archiveRepository->findAll());
 
         //récupérer la liste des participants
         $participants = $selectedSortie->getParticipants()->toArray();
