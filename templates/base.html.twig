@@ -91,7 +91,8 @@
             </div>
         </nav>
 
-        <div id="burgerbutton" style="position: absolute;right: 0; margin: 5px; z-index: 5; opacity: 40%" onclick="shownav()">
+        <div id="burgerbutton" style="position: absolute;right: 0; margin: 5px; z-index: 5; opacity: 40%"
+             onclick="shownav()">
             <img src="{{ asset('img/burgerbutton.png') }}" alt="">
         </div>
 
@@ -183,25 +184,23 @@
 <script>
 
     jQuery(
-        function ($){
+        function ($) {
             init();
 
-            function init(){
+            function init() {
                 $('#burgerbar').hide();
                 console.log('Page chargée')
             }
         }
     )
 
-    function shownav()
-    {
+    function shownav() {
         $('#burgerbar').slideDown(500);
         $('#homesmall').slideUp(500);
         $('#burgerbutton').attr("onclick", "hidenav()");
     }
 
-    function hidenav()
-    {
+    function hidenav() {
         $('#burgerbar').slideUp(500);
         $('#homesmall').slideDown(500);
         $('#burgerbutton').attr("onclick", "shownav()");
