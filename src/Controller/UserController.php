@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Participant;
 use App\Form\RegistrationFormType;
+use App\Repository\ParticipantRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +17,7 @@ class UserController extends AbstractController
 {
 
     /**
-     * @Route("/register", name="app_register")
+     * @Route("/admin/register", name="app_register")
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $entityManager): Response
     {
@@ -81,7 +82,31 @@ class UserController extends AbstractController
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
+    /**
+     * @Route("/admin/listeUtilisateurs", name="liste_users")
+     */
+    public function listerUsers(ParticipantRepository $participantRepository)
+    {
+        $participants = $participantRepository->findAll();
 
+        return $this->render('participant/listeUsers.html.twig', [
+            'liste' => $participants
+        ]);
+    }
 
+    /**
+     * @Route("/admin/remove/{id}", name="remove_user", requirements={"id":"\d+"})
+     */
+    public function supprUser(ParticipantRepository $participantRepository, int $id,
+                              EntityManagerInterface $entityManager)
+    {
+        $participant = $participantRepository->find($id);
+
+        $entityManager->remove($participant);
+        $entityManager->flush();
+
+        $this->addFlash('info', 'L\'utilisateur '.$participant->getPseudo().' a bien été supprimé');
+        return $this->redirectToRoute('liste_users');
+    }
 
 }

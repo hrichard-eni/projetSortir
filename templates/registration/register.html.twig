@@ -6,40 +6,54 @@
 
 {% block main %}
 
-        <div class="container center label-over-input justify-content-center">
+    <div class="container center label-over-input justify-content-center">
 
-            <h1 style="margin-top: 30px">
-                Nouveau participant
-            </h1>
+        <div class="row">
+            <div class="col-3 col-lg-4"></div>
+            <div class="col-6 col-lg 4">
+                <a href="{{ path('liste_users') }}" class="btn btn-primary">
+                    Consulter et modifier la liste des utilisateurs
+                </a>
+            </div>
+            <div class="col-3 col-lg-4"></div>
 
-            {{ form_start(register)}}
-
-            <div class="row">
-                <div class="col-12 col-lg-6">
-                    {{ form_row(register.prenom) }}
-                    {{ form_row(register.nom) }}
-                    {{ form_row(register.pseudo) }}
-                    {{ form_row(register.email) }}
-                </div>
-
-                <div class="col-12 col-lg-6">
-                    {{ form_row(register.telephone) }}
-                    {{ form_row(register.campus) }}
-                    {{ form_row(register.plainPassword) }}
-                </div>
-
-
-                <div class="col-4 col-lg-5">
-                </div>
-                <div class="col-4 col-lg-2">
-                    <button class="btn btn-secondary">Ajouter ce participant</button>
-                </div>
-                <div class="col-4 col-lg-5"></div>
+            <div class="col-12 mt-3">
+                ou
             </div>
 
-            {{ form_end(register)}}
+            <h2 class="col-12 mt-2">
+                Ajouter un nouveau participant
+            </h2>
         </div>
 
-{#    <div class="alert alert-danger" role="alert">{{ flashError }}</div>   #}
+        {{ form_start(register) }}
+
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                {{ form_row(register.prenom) }}
+                {{ form_row(register.nom) }}
+                {{ form_row(register.pseudo) }}
+                {{ form_row(register.email) }}
+            </div>
+
+            <div class="col-12 col-lg-6">
+                {{ form_row(register.telephone) }}
+                {{ form_row(register.campus) }}
+                {{ form_row(register.plainPassword) }}
+            </div>
+
+
+            <div class="col-4 col-lg-5">
+            </div>
+            <div class="col-4 col-lg-2">
+                <button class="btn btn-secondary">Ajouter ce participant</button>
+            </div>
+            <div class="col-4 col-lg-5"></div>
+        </div>
+
+        {{ form_end(register) }}
+    </div>
+
+    {# <div class="alert alert-danger" role="alert">{{ flashError }}</div> #}
 
 {% endblock %}
