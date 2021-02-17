@@ -55,7 +55,7 @@ class ParticipantSortieController extends AbstractController
         $entityManager->persist($sortieSelectionnee);
         $entityManager->flush();
         $this->addFlash('success', 'Désinscription réussie');
-        return $this->redirectToRoute("sorties_detail", ['id'=> $id]);
+        return $this->redirectToRoute("main_home", []);
     }
 
 

@@ -63,7 +63,7 @@
                                         Cloturée
                                     {% endif %}</td>
                                 <td class="col-1 d-none d-xl-table-cell center">
-                                    {% if sortie.isParticipant (app.user.id) and app.user.id != sortie.organisateur.id %}
+                                    {% if sortie.isParticipant (app.user.id) %}
                                         X
                                     {% endif %}
                                 </td>
