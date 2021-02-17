@@ -7,6 +7,7 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
@@ -16,6 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Sortie
 {
     /**
+     * @Groups ({"sorties_list"})
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -68,6 +70,7 @@ class Sortie
     private $organisateur;
 
     /**
+     * @Groups ({"sorties_list"})
      * @ORM\ManyToMany(targetEntity=Participant::class, mappedBy="estInscrit")
      */
     private $participants;
