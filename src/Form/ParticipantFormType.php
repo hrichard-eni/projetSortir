@@ -20,10 +20,17 @@ class ParticipantFormType extends AbstractType
     {
         $builder
 
-            ->add('pseudo')
-            ->add('prenom')
-            ->add('nom')
+            ->add('pseudo', TextType::class, [
+                'label' => 'Pseudo :'
+            ])
+            ->add('prenom', TextType::class, [
+                'label' => 'Prénom :'
+            ])
+            ->add('nom', TextType::class, [
+                'label' => 'Nom :'
+            ])
             ->add('telephone', TextType::class, [
+                'label' => 'Téléphone :',
                 'required' => false
             ])
             ->add('password', RepeatedType::class, [
@@ -31,17 +38,19 @@ class ParticipantFormType extends AbstractType
                 'type' => PasswordType::class,
                 'invalid_message' => "Confirmation différente du mot de passe",
                 'required' => true,
-                'first_options' => ['label' => 'Mot de passe'],
-                'second_options' => ['label' => 'Confirmer le mot de passe']
+                'first_options' => ['label' => 'Mot de passe :'],
+                'second_options' => ['label' => 'Confirmer le mot de passe :']
 
             ])
             ->add('campus', EntityType::class, [
+                'label' => 'Campus :',
                 'class' => 'App\Entity\Campus',
                 'invalid_message' => 'Eh le pirate ! Pas touche à notre code !',
                 'choice_label' => 'nom'
             ])
 
             ->add('avatar', FileType::class, [
+                'label' => 'Avatar :',
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
