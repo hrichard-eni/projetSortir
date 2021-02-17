@@ -6,12 +6,14 @@
 
         <div id="filtres_sorties" class="row justify-content-center g-0 ">
             <div id="filtres_champs" class="col-xs-offset-1 col-xs-8 col-sm-10 col-md-10 col-lg-10">
-                <div id="filtre_campus" >
+                <div id="filtre_campus">
                     {{ form_start(filtre_form, {attr: {'novalidate': 'novalidate'}}) }}
                     {{ form_label(filtre_form.campus) }}
                     {{ form_widget(filtre_form.campus) }}
                     {{ form_end(filtre_form) }}
-                    <button id="rechercheFiltre" class="btn btn-primary" style="margin-bottom: 1em;" onclick="rechercheSorties()">Rechercher</button>
+                    <button id="rechercheFiltre" class="btn btn-primary" style="margin-bottom: 1em;"
+                            onclick="rechercheSorties()">Rechercher
+                    </button>
                 </div>
 
             </div>
@@ -20,109 +22,125 @@
 
         <div id="filtres"></div>
         <div id="tableau_desktop">
-        <div id="liste_sorties" class="row justify-content-center g-0">
+            <div id="liste_sorties" class="row justify-content-center g-0">
+                <table id="tab_sorties" class="col-11">
+                    <thead>
+                    <tr>
+                        <th class="col-2">Nom</th>
+                        <th class="col-2">Date</th>
+                        <th class="col-2 d-none d-xl-table-cell">Clôture</th>
+                        <th class="col-1 d-none d-xl-table-cell">inscrits/places</th>
+                        <th class="col-1">Etat</th>
+                        <th class="col-1 d-none d-xl-table-cell">Inscrit</th>
+                        <th class="col-1 d-none d-xl-table-cell">Organisateur</th>
+                        <th class="col-1">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody id="lignesSorties">
+                    {% for sortie in sorties %}
+                        {% if (date("now") < sortie.dateHeureDebut|date_modify("+1month")) %}
+                            <tr data-id-campus="{{ sortie.campusOrganisateur.id }}"
+                                data-date-debut="{{ sortie.dateHeureDebut|date("d/m/Y", "Europe/Paris") }}"
+                                data-date-fin="{{ sortie.dateLimiteInscription|date("d/m/Y", "Europe/Paris") }}"
+                                data-organisateur-id="{{ sortie.organisateur.id }}"
+                                data-id-sortie="{{ sortie.id }}">
+
+                                <td class="col-2">
+                                    <a href="{{ path('sorties_detail', {id:sortie.id }) }}">
+                                        {{ sortie.nom }}
+                                    </a>
+                                </td>
+                                <td class="col-2">{{ sortie.dateHeureDebut|date("d/m/Y H:i") }}</td>
+                                <td class="col-2 d-none d-xl-table-cell">{{ sortie.dateLimiteInscription|date("d/m/Y H:i") }}</td>
+                                <td class="col-1 d-none d-xl-table-cell center">
+                                    {{ sortie.participants|length }} /{{ sortie.nbInscriptionsMax }}
+                                </td>
+                                <td class="col-1">{% if (sortie.dateLimiteInscription > date("now")) %}
+                                        Ouverte
+                                    {% elseif (sortie.dateHeureDebut < date("now")) %}
+                                        Passée
+                                    {% elseif (sortie.dateLimiteInscription < date("now")) and (sortie.dateHeureDebut > date("now")) %}
+                                        Cloturée
+                                    {% endif %}</td>
+                                <td class="col-1 d-none d-xl-table-cell center">
+                                    {% if sortie.isParticipant (app.user.id) and app.user.id != sortie.organisateur.id %}
+                                        X
+                                    {% endif %}
+                                </td>
+                                <td class="col-1 d-none d-xl-table-cell">{{ sortie.organisateur.pseudo }}</td>
+                                <td class="col-1 center">
+                                    {% if sortie.isParticipant (app.user.id) and (sortie.dateLimiteInscription > date("now")) and app.user.id != sortie.organisateur.id %}
+                                        <a href="{{ path('desinscription_sortie',{id:sortie.id}) }}">
+                                            <button class="btn btn-danger" type="button" style="opacity: 80%">
+                                                Se&nbsp;désister
+                                            </button>
+                                        </a>
+                                    {% elseif (not sortie.isParticipant (app.user.id)) and (sortie.dateLimiteInscription > date("now")) and app.user.id != sortie.organisateur.id %}
+                                        <a href="{{ path('inscription_sortie',{id:sortie.id}) }}">
+                                            <button class="btn btn-success" type="button" style="opacity: 80%">
+                                                S'inscrire
+                                            </button>
+                                        </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+        {#<div id="tableau_mobile" class="row justify-content-center">
             <table id="tab_sorties" class="col-10">
                 <thead>
                 <tr>
-                    <th class="col-1">Nom</th>
-                    <th class="col-2">Date</th>
-                    <th class="col-2">Clôture</th>
-                    <th class="col-1">inscrits/places</th>
-                    <th class="col-1">Etat</th>
-                    <th class="col-1">Inscrit</th>
-                    <th class="col-1">Organisateur</th>
-                    <th class="col-1">Actions</th>
-                </tr>
-                </thead>
-                <tbody id="lignesSorties">
-                    {% for sortie in sorties %}
-                    {% if (date("now") < sortie.dateHeureDebut|date_modify("+1month")) %}
-                    <tr data-id-campus="{{ sortie.campusOrganisateur.id }}"
-                        data-date-debut="{{ sortie.dateHeureDebut|date("d/m/Y", "Europe/Paris")}}"
-                        data-date-fin="{{ sortie.dateLimiteInscription|date("d/m/Y", "Europe/Paris")}}"
-                        data-organisateur-id="{{ sortie.organisateur.id }}"
-                        data-id-sortie="{{ sortie.id }}"
-                    >
-                        <td class="col-1"> <a href="{{ path('sorties_detail', {id:sortie.id })}}">{{ sortie.nom }}</a></td>
-                        <td class="col-2">{{ sortie.dateHeureDebut|date("d/m/Y H:i") }}</td>
-                        <td class="col-2">{{ sortie.dateLimiteInscription|date("d/m/Y H:i") }}</td>
-                        <td class="col-1 center">{{ sortie.participants|length }}/{{ sortie.nbInscriptionsMax }}</td>
-                        <td class="col-1">{% if (sortie.dateLimiteInscription > date("now")) %}
-                                Ouverte
-                            {% elseif (sortie.dateHeureDebut < date("now")) %}
-                                Passée
-                            {% elseif (sortie.dateLimiteInscription < date("now")) and (sortie.dateHeureDebut > date("now"))  %}
-                                Cloturée
-                            {% endif %}</td>
-                        <td class="col-1 center">
-                            {% if sortie.isParticipant (app.user.id) and app.user.id != sortie.organisateur.id%}
-                                X
-                            {% endif %}
-                        </td>
-                        <td class="col-1">{{ sortie.organisateur.pseudo }}</td>
-                        <td class="col-1 center">
-                            {% if sortie.isParticipant (app.user.id) and (sortie.dateLimiteInscription > date("now")) and app.user.id != sortie.organisateur.id %}
-                                <a href="{{ path('desinscription_sortie',{id:sortie.id}) }}"><button class="btn btn-danger"
-                                                                                                     type="button" style="opacity: 80%">Se désister</button></a>
-                            {% elseif (not sortie.isParticipant (app.user.id)) and (sortie.dateLimiteInscription > date("now")) and app.user.id != sortie.organisateur.id%}
-                                <a href="{{ path('inscription_sortie',{id:sortie.id}) }}">
-                                    <button class="btn btn-success"
-                                            type="button" style="opacity: 80%">S'inscrire</button></a>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% endif %}
-                    {%  endfor %}
-                </tbody>
-            </table>
-        </div>
-        </div>
-
-
-
-        <div id="tableau_mobile" class="row justify-content-center">
-            <table id="tab_sorties" class="col-10" >
-                <thead>
-                <tr>
-                    <th >Nom de la sortie</th>
-                    <th >Date de la sortie</th>
-                    <th >Etat</th>
-                    <th >Actions</th>
+                    <th>Nom de la sortie</th>
+                    <th>Date de la sortie</th>
+                    <th>Etat</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody id="lignesSorties">
                 {% for sortie in sorties %}
                     {% if (date("now") < sortie.dateHeureDebut|date_modify("+1month")) %}
                         <tr data-id-campus="{{ sortie.campusOrganisateur.id }}"
-                            data-date-debut="{{ sortie.dateHeureDebut|date("d/m/Y", "Europe/Paris")}}"
-                            data-date-fin="{{ sortie.dateLimiteInscription|date("d/m/Y", "Europe/Paris")}}"
+                            data-date-debut="{{ sortie.dateHeureDebut|date("d/m/Y", "Europe/Paris") }}"
+                            data-date-fin="{{ sortie.dateLimiteInscription|date("d/m/Y", "Europe/Paris") }}"
                             data-organisateur-id="{{ sortie.organisateur.id }}"
                         >
-                            <td > <a href="{{ path('sorties_detail', {id:sortie.id })}}">{{ sortie.nom }}</a></td>
-                            <td >{{ sortie.dateHeureDebut|date("d/m/Y H:i") }}</td>
+                            <td><a href="{{ path('sorties_detail', {id:sortie.id }) }}">{{ sortie.nom }}</a></td>
+                            <td>{{ sortie.dateHeureDebut|date("d/m/Y H:i") }}</td>
                             <td class="col-1">{% if (sortie.dateLimiteInscription > date("now")) %}
                                     Ouverte
                                 {% elseif (sortie.dateHeureDebut < date("now")) %}
                                     Passée
-                                {% elseif (sortie.dateLimiteInscription < date("now")) and (sortie.dateHeureDebut > date("now"))  %}
+                                {% elseif (sortie.dateLimiteInscription < date("now")) and (sortie.dateHeureDebut > date("now")) %}
                                     Cloturée
                                 {% endif %}</td>
-                            <td >
+                            <td>
                                 {% if sortie.isParticipant (app.user.id) and (sortie.dateLimiteInscription > date("now")) and app.user.id != sortie.organisateur.id %}
-                                    <a href="{{ path('desinscription_sortie',{id:sortie.id}) }}"><button class="btn btn-danger"
-                                                                                                         type="button" style="opacity: 80%">Se désister</button></a>
-                                {% elseif (not sortie.isParticipant (app.user.id)) and (sortie.dateLimiteInscription > date("now")) and app.user.id != sortie.organisateur.id%}
+                                    <a href="{{ path('desinscription_sortie',{id:sortie.id}) }}">
+                                        <button class="btn btn-danger"
+                                                type="button" style="opacity: 80%">Se désister
+                                        </button>
+                                    </a>
+                                {% elseif (not sortie.isParticipant (app.user.id)) and (sortie.dateLimiteInscription > date("now")) and app.user.id != sortie.organisateur.id %}
                                     <a href="{{ path('inscription_sortie',{id:sortie.id}) }}">
                                         <button class="btn btn-success"
-                                                type="button" style="opacity: 80%">S'inscrire</button></a>
+                                                type="button" style="opacity: 80%">S'inscrire
+                                        </button>
+                                    </a>
                                 {% endif %}
                             </td>
                         </tr>
                     {% endif %}
-                {%  endfor %}
+                {% endfor %}
                 </tbody>
             </table>
-        </div>
+        </div>#}
 
 
 
@@ -131,234 +149,228 @@
 
         <script>
 
-            window.onload=init;
-        var listeCampus;
-        var lignesSorties;
-        var dateDebut;
-        var anneeDateDebut;
-        var moisDateDebut;
-        var jourDateDebut;
-        var dateFin;
-        var anneeDateFin;
-        var moisDateFin;
-        var jourDateFin;
-        var isOrganisateur;
-        var isInscrit;
-        var isNotInscrit;
-        var idUser = {{ app.user.id }};
+            window.onload = init;
+            var listeCampus;
+            var lignesSorties;
+            var dateDebut;
+            var anneeDateDebut;
+            var moisDateDebut;
+            var jourDateDebut;
+            var dateFin;
+            var anneeDateFin;
+            var moisDateFin;
+            var jourDateFin;
+            var isOrganisateur;
+            var isInscrit;
+            var isNotInscrit;
+            var idUser = {{ app.user.id }};
 
-    function init(){
+            function init() {
 
-        //On indique à JS les éléments à cibler pour le système de filtre via les ID générées par le form Symfony
-        listeCampus = document.getElementById('filtres_sorties_form_campus');
-        dateDebut = document.getElementById('filtres_sorties_form_dateDebut');
-        anneeDateDebut = document.getElementById('filtres_sorties_form_dateDebut_year');
-        moisDateDebut = document.getElementById('filtres_sorties_form_dateDebut_month');
-        jourDateDebut = document.getElementById('filtres_sorties_form_dateDebut_day');
-        dateFin = document.getElementById('filtres_sorties_form_dateFin');
-        anneeDateFin = document.getElementById('filtres_sorties_form_dateFin_year');
-        moisDateFin = document.getElementById('filtres_sorties_form_dateFin_month');
-        jourDateFin = document.getElementById('filtres_sorties_form_dateFin_day');
-        isOrganisateur = document.getElementById('filtres_sorties_form_isOrganisateur');
-        isInscrit = document.getElementById('filtres_sorties_form_isInscrit');
-        isNotInscrit = document.getElementById('filtres_sorties_form_isNotInscrit');
+                //On indique à JS les éléments à cibler pour le système de filtre via les ID générées par le form Symfony
+                listeCampus = document.getElementById('filtres_sorties_form_campus');
+                dateDebut = document.getElementById('filtres_sorties_form_dateDebut');
+                anneeDateDebut = document.getElementById('filtres_sorties_form_dateDebut_year');
+                moisDateDebut = document.getElementById('filtres_sorties_form_dateDebut_month');
+                jourDateDebut = document.getElementById('filtres_sorties_form_dateDebut_day');
+                dateFin = document.getElementById('filtres_sorties_form_dateFin');
+                anneeDateFin = document.getElementById('filtres_sorties_form_dateFin_year');
+                moisDateFin = document.getElementById('filtres_sorties_form_dateFin_month');
+                jourDateFin = document.getElementById('filtres_sorties_form_dateFin_day');
+                isOrganisateur = document.getElementById('filtres_sorties_form_isOrganisateur');
+                isInscrit = document.getElementById('filtres_sorties_form_isInscrit');
+                isNotInscrit = document.getElementById('filtres_sorties_form_isNotInscrit');
 
-        lignesSorties = document.getElementById('lignesSorties');
-        let optionAllCampus = document.createElement("option");
-        optionAllCampus.value='0';
-        optionAllCampus.innerText='Tous';
-        listeCampus.prepend(optionAllCampus);
-        listeCampus.value='0';
+                lignesSorties = document.getElementById('lignesSorties');
+                let optionAllCampus = document.createElement("option");
+                optionAllCampus.value = '0';
+                optionAllCampus.innerText = 'Tous';
+                listeCampus.prepend(optionAllCampus);
+                listeCampus.value = '0';
 
-        // Dès que l'utilisateur effectue une modification sur le formulaire de filtre, on appelle les fonctions liées
-        listeCampus.onchange=campusSelect;
-        dateDebut.onchange=dateDebutSelect;
-        dateFin.onchange=dateFinSelect;
+                // Dès que l'utilisateur effectue une modification sur le formulaire de filtre, on appelle les fonctions liées
+                listeCampus.onchange = campusSelect;
+                dateDebut.onchange = dateDebutSelect;
+                dateFin.onchange = dateFinSelect;
 
-        isOrganisateur.addEventListener('change', (event) => {
-            if (event.currentTarget.checked) {
-                organisateurSelect(idUser)
+                isOrganisateur.addEventListener('change', (event) => {
+                    if (event.currentTarget.checked) {
+                        organisateurSelect(idUser)
+                    } else campusSelect();
+                })
+
+                isInscrit.addEventListener('change', (event) => {
+                    if (event.currentTarget.checked) {
+                        inscritSelect(idUser)
+                    } else campusSelect();
+                })
+
+                isNotInscrit.addEventListener('change', (event) => {
+                    if (event.currentTarget.checked) {
+                        notInscritSelect(idUser)
+                    } else campusSelect();
+                })
+
             }
-            else campusSelect();
-        })
 
-        isInscrit.addEventListener('change', (event) => {
-            if (event.currentTarget.checked) {
-                inscritSelect(idUser)
-            }
-            else campusSelect();
-        })
+            function rechercheSorties() {
 
-        isNotInscrit.addEventListener('change', (event) => {
-            if (event.currentTarget.checked) {
-                notInscritSelect(idUser)
-            }
-            else campusSelect();
-        })
-
-    }
-
-    function rechercheSorties() {
-
-        campusSelect();
-        dateDebutSelect();
-        dateFinSelect();
+                campusSelect();
+                dateDebutSelect();
+                dateFinSelect();
 
             }
 
 
-    function campusSelect() {
-        let idcampus = listeCampus.value;
+            function campusSelect() {
+                let idcampus = listeCampus.value;
 
-        let tr_lignesSorties = lignesSorties.children;
-        for (var i = 0; i < tr_lignesSorties.length; i++) {
+                let tr_lignesSorties = lignesSorties.children;
+                for (var i = 0; i < tr_lignesSorties.length; i++) {
 
-            if (tr_lignesSorties[i].dataset.idCampus === idcampus || idcampus === '0') {
-                tr_lignesSorties[i].style = "";
+                    if (tr_lignesSorties[i].dataset.idCampus === idcampus || idcampus === '0') {
+                        tr_lignesSorties[i].style = "";
 
-            } else {
-                tr_lignesSorties[i].style.display = "none";
-            }
-        }
-    }
-
-    function dateDebutSelect() {
-        let debutSelect = new Date(anneeDateDebut.value, moisDateDebut.value-1, jourDateDebut.value);
-        let tr_lignesSorties = lignesSorties.children;
-
-        for (var i=0; i<tr_lignesSorties.length; i++) {
-            let debutSortie = new Date(tr_lignesSorties[i].dataset.dateDebut);
-
-            if(debutSortie >= debutSelect) {
-                tr_lignesSorties[i].style = "";
-            }else
-            {
-                tr_lignesSorties[i].style.display="none";
-            }
-        }
-    }
-
-    function dateFinSelect() {
-        let finSelect = new Date(anneeDateFin.value, moisDateFin.value-1, jourDateFin.value);
-        let tr_lignesSorties = lignesSorties.children;
-
-        for (var i=0; i<tr_lignesSorties.length; i++) {
-            let finSortie = new Date(tr_lignesSorties[i].dataset.dateFin);
-
-            if(finSortie <= finSelect) {
-                tr_lignesSorties[i].style = "";
-            }else
-            {
-                tr_lignesSorties[i].style.display="none";
-            }
-        }
-    }
-
-    function organisateurSelect(idUser) {
-        let tr_lignesSorties = lignesSorties.children;
-
-        console.log(idUser);
-
-        for (var i=0; i<tr_lignesSorties.length; i++) {
-            console.log(tr_lignesSorties[i].dataset.organisateurId);
-
-            if(idUser == tr_lignesSorties[i].dataset.organisateurId ) {
-                tr_lignesSorties[i].style = "";
-            }else
-            {
-                tr_lignesSorties[i].style.display="none";
-            }
-
-        }
-    }
-
-    function inscritSelect(idUser) {
-        let tr_lignesSorties = lignesSorties.children;
-        var idsortie;
-
-        console.log(tr_lignesSorties);
-
-        $.ajax({
-
-            "url": "{{ path('api_sorties_list')}}",
-        })
-            .done(function(response){
-                console.log(response);
-                console.log(idUser);
-
-                for (var i=0; i<tr_lignesSorties.length; i++) {
-
-                    idsortie = tr_lignesSorties[i].dataset.idSortie;
-                    console.log(idsortie)
-                    let sortie = response.find(element => element.id == idsortie);
-
-                    let estInscrit = false;
-
-                    for (let participant of sortie.participants) {
-
-                        console.log(participant);
-
-                        if (participant.id == idUser) {
-                            estInscrit = true;
-                        }
-
-                        console.log(estInscrit)
-
+                    } else {
+                        tr_lignesSorties[i].style.display = "none";
                     }
+                }
+            }
 
-                    if (estInscrit) {
+            function dateDebutSelect() {
+                let debutSelect = new Date(anneeDateDebut.value, moisDateDebut.value - 1, jourDateDebut.value);
+                let tr_lignesSorties = lignesSorties.children;
+
+                for (var i = 0; i < tr_lignesSorties.length; i++) {
+                    let debutSortie = new Date(tr_lignesSorties[i].dataset.dateDebut);
+
+                    if (debutSortie >= debutSelect) {
                         tr_lignesSorties[i].style = "";
                     } else {
                         tr_lignesSorties[i].style.display = "none";
                     }
                 }
-            });
+            }
 
-    }
+            function dateFinSelect() {
+                let finSelect = new Date(anneeDateFin.value, moisDateFin.value - 1, jourDateFin.value);
+                let tr_lignesSorties = lignesSorties.children;
 
-    function notInscritSelect(idUser) {
-        let tr_lignesSorties = lignesSorties.children;
-        var idsortie;
+                for (var i = 0; i < tr_lignesSorties.length; i++) {
+                    let finSortie = new Date(tr_lignesSorties[i].dataset.dateFin);
 
-        console.log(tr_lignesSorties);
-
-        $.ajax({
-
-            "url": "{{ path('api_sorties_list')}}",
-        })
-            .done(function(response){
-                console.log(response);
-                console.log(idUser);
-
-                for (var i=0; i<tr_lignesSorties.length; i++) {
-
-                    idsortie = tr_lignesSorties[i].dataset.idSortie;
-                    console.log(idsortie)
-                    let sortie = response.find(element => element.id == idsortie);
-
-                    let estInscrit = false;
-
-                    for (let participant of sortie.participants) {
-
-                        console.log(participant);
-
-                        if (participant.id == idUser) {
-                            estInscrit = true;
-                        }
-
-                        console.log(estInscrit)
-
-                    }
-
-                    if (!estInscrit) {
+                    if (finSortie <= finSelect) {
                         tr_lignesSorties[i].style = "";
                     } else {
                         tr_lignesSorties[i].style.display = "none";
                     }
                 }
-            });
-    }
+            }
+
+            function organisateurSelect(idUser) {
+                let tr_lignesSorties = lignesSorties.children;
+
+                console.log(idUser);
+
+                for (var i = 0; i < tr_lignesSorties.length; i++) {
+                    console.log(tr_lignesSorties[i].dataset.organisateurId);
+
+                    if (idUser == tr_lignesSorties[i].dataset.organisateurId) {
+                        tr_lignesSorties[i].style = "";
+                    } else {
+                        tr_lignesSorties[i].style.display = "none";
+                    }
+
+                }
+            }
+
+            function inscritSelect(idUser) {
+                let tr_lignesSorties = lignesSorties.children;
+                var idsortie;
+
+                console.log(tr_lignesSorties);
+
+                $.ajax({
+
+                    "url": "{{ path('api_sorties_list') }}",
+                })
+                    .done(function (response) {
+                        console.log(response);
+                        console.log(idUser);
+
+                        for (var i = 0; i < tr_lignesSorties.length; i++) {
+
+                            idsortie = tr_lignesSorties[i].dataset.idSortie;
+                            console.log(idsortie)
+                            let sortie = response.find(element => element.id == idsortie);
+
+                            let estInscrit = false;
+
+                            for (let participant of sortie.participants) {
+
+                                console.log(participant);
+
+                                if (participant.id == idUser) {
+                                    estInscrit = true;
+                                }
+
+                                console.log(estInscrit)
+
+                            }
+
+                            if (estInscrit) {
+                                tr_lignesSorties[i].style = "";
+                            } else {
+                                tr_lignesSorties[i].style.display = "none";
+                            }
+                        }
+                    });
+
+            }
+
+            function notInscritSelect(idUser) {
+                let tr_lignesSorties = lignesSorties.children;
+                var idsortie;
+
+                console.log(tr_lignesSorties);
+
+                $.ajax({
+
+                    "url": "{{ path('api_sorties_list') }}",
+                })
+                    .done(function (response) {
+                        console.log(response);
+                        console.log(idUser);
+
+                        for (var i = 0; i < tr_lignesSorties.length; i++) {
+
+                            idsortie = tr_lignesSorties[i].dataset.idSortie;
+                            console.log(idsortie)
+                            let sortie = response.find(element => element.id == idsortie);
+
+                            let estInscrit = false;
+
+                            for (let participant of sortie.participants) {
+
+                                console.log(participant);
+
+                                if (participant.id == idUser) {
+                                    estInscrit = true;
+                                }
+
+                                console.log(estInscrit)
+
+                            }
+
+                            if (!estInscrit) {
+                                tr_lignesSorties[i].style = "";
+                            } else {
+                                tr_lignesSorties[i].style.display = "none";
+                            }
+                        }
+                    });
+            }
 
 
         </script>
-    {% endblock%}
+    {% endblock %}

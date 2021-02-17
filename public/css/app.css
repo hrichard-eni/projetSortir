@@ -134,7 +134,7 @@ table {
 }
 
 /*Tableaux */
-@media screen and (max-width: 767px){
+/*@media screen and (max-width: 767px){
     #filtres_sorties{
         padding : 30px;
 
@@ -147,7 +147,7 @@ table {
     #tableau_mobile{
         display:none;
     }
-}
+}*/
 
 td, th {
     border: thin solid #110e54;
