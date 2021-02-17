@@ -91,7 +91,7 @@
             </div>
         </nav>
 
-        <div id="burgerbutton" style="position: absolute;right: 0; margin: 5px; z-index: 5; opacity: 40%"
+        <div id="burgerbutton" style="position: absolute;right: 0; margin: 10px; z-index: 5"
              onclick="shownav()">
             <img src="{{ asset('img/burgerbutton.png') }}" alt="">
         </div>
@@ -103,7 +103,7 @@
         </div>
 
         <div id="burgerbar" class="center">
-            <ul style="font-size:1.1em; background-color: #296A6A">
+            <ul style="font-size:1.1em; background-color: #296A6A; padding: 0">
 
                 {% if (app.user == null) %}
                     <li>
