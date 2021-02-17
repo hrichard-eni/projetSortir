@@ -40,6 +40,7 @@
                         data-date-debut="{{ sortie.dateHeureDebut|date("d/m/Y", "Europe/Paris")}}"
                         data-date-fin="{{ sortie.dateLimiteInscription|date("d/m/Y", "Europe/Paris")}}"
                         data-organisateur-id="{{ sortie.organisateur.id }}"
+                        data-id-sortie="{{ sortie.id }}"
                     >
                         <td class="col-3"> <a href="{{ path('sorties_detail', {id:sortie.id })}}">{{ sortie.nom }}</a></td>
                         <td class="col-1">{{ sortie.dateHeureDebut|date("d/m/Y H:i") }}</td>
@@ -90,6 +91,7 @@
         var moisDateFin;
         var jourDateFin;
         var isOrganisateur;
+        var isInscrit;
         var idUser = {{ app.user.id }};
 
     function init(){
@@ -105,6 +107,7 @@
         moisDateFin = document.getElementById('filtres_sorties_form_dateFin_month');
         jourDateFin = document.getElementById('filtres_sorties_form_dateFin_day');
         isOrganisateur = document.getElementById('filtres_sorties_form_isOrganisateur');
+        isInscrit = document.getElementById('filtres_sorties_form_isInscrit');
 
         lignesSorties = document.getElementById('lignesSorties');
         let optionAllCampus = document.createElement("option");
@@ -210,8 +213,52 @@
 
     function inscritSelect(idUser) {
         let tr_lignesSorties = lignesSorties.children;
+        var idsortie;
 
-        console.log(inscritArray);
+        console.log(tr_lignesSorties);
+
+        $.ajax({
+
+            "url": "{{ path('api_sorties_list')}}",
+        })
+            .done(function(response){
+                console.log(response);
+                console.log(idUser);
+
+                for (var i=0; i<tr_lignesSorties.length; i++) {
+
+                    idsortie = tr_lignesSorties[i].dataset.idSortie;
+                    console.log(idsortie)
+                    let sortie = response.find(element => element.id == idsortie);
+
+                    let estInscrit = false;
+
+                    for (let participant of sortie.participants) {
+
+                        console.log(participant);
+
+                        if (participant.id == idUser) {
+                            estInscrit = true;
+                        }
+
+                        console.log(estInscrit)
+
+                    }
+
+                    if (estInscrit) {
+                        tr_lignesSorties[i].style = "";
+                    } else {
+                        tr_lignesSorties[i].style.display = "none";
+                    }
+                }
+            });
+
+
+
+
+
+        /*
+        let tr_lignesSorties = lignesSorties.children;
 
         for (var i=0; i<tr_lignesSorties.length; i++) {
 
@@ -227,8 +274,7 @@
             }
 
         }
-
-
+        */
     }
 
 
