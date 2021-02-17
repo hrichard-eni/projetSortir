@@ -135,11 +135,19 @@ table {
 
 /*Tableaux */
 @media screen and (max-width: 767px){
+    #filtres_sorties{
+        padding : 30px;
+
+    }
     #tableau_desktop{
         display:none;
     }
 }
-
+@media screen and (min-width: 768px){
+    #tableau_mobile{
+        display:none;
+    }
+}
 
 
 textarea {
