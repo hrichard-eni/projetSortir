@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | Edit Users
+{% endblock %}
+
+{% block main %}
+
+    {% for participant in liste %}
+        <div class="center mb-3">
+            <strong>Nom : </strong>{{ participant.nom }} |
+            <strong>Prénom : </strong>{{ participant.prenom }} |
+            <strong>Pseudo : </strong>{{ participant.pseudo }} |
+            <strong>Email : </strong>{{ participant.email }} |
+            {% if participant.telephone|length >= 10 %}
+                <strong>Telephone : </strong>{{ participant.telephone }} |
+            {% endif %}
+            <strong>Campus : </strong>{{ participant.campus.nom }}
+
+            {% if participant.administrateur == false %}
+            <!-- Trigger de la popup -->
+            <a class="link link-danger" data-bs-toggle="modal" data-bs-target="#popupconfirm{{ participant.id }}">
+                Supprimer {{ participant.pseudo }}
+            </a>
+            <!-- Fin du trigger -->
+            {% else %}
+                <strong style="color: red">Admin</strong>
+            {% endif %}
+            <!-- Popup dans la boucle pour récupérer les infos de l'utilisateur en cours -->
+            <div class="modal fade" id="popupconfirm{{ participant.id }}" tabindex="-1" aria-labelledby="confirmSupp" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmSupp">Supprimer un {{ participant.pseudo }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Est-tu sûr de vouloir supprimer {{ participant.pseudo }} ?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Annuler</button>
+                            <a href="{{ path('remove_user', {'id': participant.id}) }}" class="btn btn-danger">Supprimer {{ participant.pseudo }} (irrévsersible)</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Fin de la div de la popup -->
+        </div>
+    {% endfor %}
+
+{% endblock %}

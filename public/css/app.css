@@ -124,12 +124,19 @@ input, select {
     color: darkgreen;
 }
 
+table {
+    border: medium solid #110e54;
+    width: 50%;
+}
+
 /*Tableaux */
 @media screen and (max-width: 767px){
-#tableau_desktop{
-    display:none;
+    #tableau_desktop{
+        display:none;
+    }
 }
-}
+
+
 
 textarea {
     resize: none;
@@ -138,4 +145,35 @@ textarea {
 td, th {
     border: thin solid #110e54;
     width: 50%;
+}
+
+/* Affichage de la navbar */
+@media (max-width: 991px) {
+    /* En dessous de 992px de large */
+    #bigscreen {
+        display: none;
+    }
+
+    #burgerbutton, #burgerbar, #homesmall {
+        display: block;
+    }
+}
+
+@media (min-width: 992px) {
+    /* Au dessus de 992px de large */
+    #bigscreen {
+        display: block;
+    }
+
+    #burgerbutton, #burgerbar, #homesmall {
+        display: none;
+    }
+}
+
+#burgerbar > ul > li {
+    list-style: none;
+}
+
+#burgerbar > ul > li > a {
+    text-decoration: none;
 }

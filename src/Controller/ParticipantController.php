@@ -44,7 +44,7 @@ class ParticipantController extends AbstractController
         $form = $this->createForm(ParticipantFormType::class, $participant);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $participant->setPassword(
                 $passwordEncoder->encodePassword(
                     $user,
@@ -99,7 +99,4 @@ class ParticipantController extends AbstractController
             "participantSelect" => $participantSelect
         ]);
     }
-
-
-
 }

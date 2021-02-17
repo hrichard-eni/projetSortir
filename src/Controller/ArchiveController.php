@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ArchiveController extends AbstractController
 {
     /**
-     * @Route("/archive", name="archive_dl")
+     * @Route("/admin/archive", name="archive_dl")
      */
     public function recupererArchives(EntityManagerInterface $entityManager, ArchiveRepository $archiveRepository): Response
     {
