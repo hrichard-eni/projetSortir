@@ -149,11 +149,6 @@ table {
     }
 }
 
-
-textarea {
-    resize: none;
-}
-
 td, th {
     border: thin solid #110e54;
     width: 50%;
