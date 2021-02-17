@@ -60,6 +60,27 @@
             <div class="col-12">
                 ------------------------------------------
             </div>
+            <!-- Bouton déroulant la liste des participants -->
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    Participants actuels
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    {% for participant in sortie.participants %}
+                        <li>
+                            <a class="dropdown-item"
+                               href="{{ path('participant_profilautrui', {'id': participant.id}) }}">
+                                {{ participant.pseudo }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <!-- Fin du bouton déroulant -->
+            <div class="col-12">
+                ------------------------------------------
+            </div>
 
             <div>
                 {# Pour tout le monde appartenant au campus organisateur #}
@@ -91,12 +112,14 @@
                         </a>
 
                         <!-- Popup de confirmation supprimer -->
-                        <div class="modal fade" id="confirmSuppr" tabindex="-1" aria-labelledby="confirmSupp" aria-hidden="true">
+                        <div class="modal fade" id="confirmSuppr" tabindex="-1" aria-labelledby="confirmSupp"
+                             aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="confirmSupp">Supprimer une sortie</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
                                         Est-tu sûr de vouloir supprimer ta sortie à {{ sortie.lieu.nom }} ? ?
@@ -131,12 +154,14 @@
                         </a>
 
                         <!-- Popup de confirmation annuler -->
-                        <div class="modal fade" id="confirmCancel" tabindex="-1" aria-labelledby="confirmAnnul" aria-hidden="true">
+                        <div class="modal fade" id="confirmCancel" tabindex="-1" aria-labelledby="confirmAnnul"
+                             aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="confirmAnnul">Annuler une sortie</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
                                         Est-tu sûr de vouloir annuler ta sortie à {{ sortie.lieu.nom }} ? ?
@@ -145,7 +170,8 @@
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                                             Ne pas annuler la sortie
                                         </button>
-                                        <a href="{{ path('sorties_cancel', {'id': sortie.id}) }}" class="btn btn-primary">
+                                        <a href="{{ path('sorties_cancel', {'id': sortie.id}) }}"
+                                           class="btn btn-primary">
                                             Annuler la sortie
                                         </a>
                                     </div>
@@ -157,7 +183,8 @@
                         <div class="col-4"></div>
                     {% elseif (sortie.etat.id == 6) %}
                         <div class="col-1"></div>
-                        <a href="{{ path('sorties_recreate', {'id': sortie.id}) }}" class="btn btn-secondary col-4 mt-2">
+                        <a href="{{ path('sorties_recreate', {'id': sortie.id}) }}"
+                           class="btn btn-secondary col-4 mt-2">
                             Recréer
                         </a>
                         <div class="col-2"></div>
@@ -167,12 +194,14 @@
                         </a>
 
                         <!-- Popup de confirmation supprimer -->
-                        <div class="modal fade" id="confirmSuppr" tabindex="-1" aria-labelledby="confirmSupp" aria-hidden="true">
+                        <div class="modal fade" id="confirmSuppr" tabindex="-1" aria-labelledby="confirmSupp"
+                             aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="confirmSupp">Supprimer une sortie</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
                                         Est-tu sûr de vouloir supprimer ta sortie à {{ sortie.lieu.nom }} ? ?
@@ -198,7 +227,7 @@
                 {% endif %}
                 <div class="col-12"></div>
                 <div class="col-3"></div>
-                <a href="{{ path('main_home')}}" class="btn btn-secondary col-6 mt-2">
+                <a href="{{ path('main_home') }}" class="btn btn-secondary col-6 mt-2">
                     Retour à l'accueil
                 </a>
                 <div class="col-3"></div>
