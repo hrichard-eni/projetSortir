@@ -47,7 +47,7 @@ class ParticipantFormType extends AbstractType
                 'constraints' => [
                     new Image([
                         'maxSize' => '5M',
-                        'maxSizeMessage' => 'Fichier trop lourd !',
+                        'maxSizeMessage' => 'Fichier trop lourd, 5Mo max !',
                         'maxHeight' => 500,
                         'maxHeightMessage' => 'Image trop grande ! (maximum 500 x 500)',
                         'maxWidth' => 500,
@@ -58,7 +58,7 @@ class ParticipantFormType extends AbstractType
 
             ->add('submit', SubmitType::class, [
                 "label"=>"Modifier",
-                "attr" => ['class'=>'btn btn-primary col-2']
+                "attr" => ['class'=>'btn btn-primary col-4 col-lg-2']
             ])
         ;
     }
