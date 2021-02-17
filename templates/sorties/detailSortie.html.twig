@@ -60,24 +60,29 @@
             <div class="col-12">
                 ------------------------------------------
             </div>
-            <!-- Bouton déroulant la liste des participants -->
-            <div class="dropdown">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                    Participants actuels
+            <!-- Bouton collapse la liste des participants -->
+            <p>
+                <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseInscrits"
+                        aria-expanded="false" aria-controls="collapseInscrits">
+                    Voir les participants inscrits
                 </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            </p>
+            <div class="collapse container center" id="collapseInscrits">
+                <div class="row">
                     {% for participant in sortie.participants %}
-                        <li>
-                            <a class="dropdown-item"
+                        <div class="col-12">
+                            <div class="col-3"></div>
+                            <a class="btn btn-outline-dark btn-sm mb-2 col-6"
                                href="{{ path('participant_profilautrui', {'id': participant.id}) }}">
                                 {{ participant.pseudo }}
                             </a>
-                        </li>
+                            <div class="col-3"></div>
+                        </div>
                     {% endfor %}
-                </ul>
+                </div>
             </div>
-            <!-- Fin du bouton déroulant -->
+            <!-- Fin du bouton collapse -->
             <div class="col-12">
                 ------------------------------------------
             </div>
