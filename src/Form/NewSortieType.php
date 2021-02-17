@@ -92,6 +92,7 @@ class NewSortieType extends AbstractType
             //Publier directement
             ->add('publish', CheckboxType::class, [
                 'label' => 'Publier directement',
+                'required' => false,
                 'mapped' => false,
                 'invalid_message' => 'Eh le pirate ! Pas touche à notre code !'
             ])

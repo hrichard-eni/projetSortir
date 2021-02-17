@@ -40,7 +40,7 @@ class SortiesController extends AbstractController
         //Si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()) {
             //Hydrater la propriété état à 'Créé' ou 'Ouverte'
-            if ($form->get('publish') == true) {
+            if ($form->get('publish')->getData() == true) {
                 $sortie->setEtat($etatRepository->find(2));
             } else {
                 $sortie->setEtat($etatRepository->find(1));
