@@ -91,19 +91,19 @@
             </div>
         </nav>
 
-        <div id="burgerbutton" style="position: absolute;right: 0; margin: 10px; z-index: 5"
+        <div id="burgerbutton" style="position: absolute;right: 0; margin: 5px 10px; z-index: 5"
              onclick="shownav()">
             <img src="{{ asset('img/burgerbutton.png') }}" alt="">
         </div>
 
-        <div id="homesmall" style="font-size:1.1em; background-color: #296A6A;">
+        <div id="homesmall" style="font-size:1.1em; background-color: #296A6A; padding: 7px 0">
             <a class="text-white text-uppercase" href="{{ path('main_home') }}" style="text-decoration: none">
                 Home
             </a>
         </div>
 
         <div id="burgerbar" class="center">
-            <ul style="font-size:1.1em; background-color: #296A6A; padding: 0">
+            <ul style="font-size:1.1em; background-color: #296A6A; padding: 5px 0">
 
                 {% if (app.user == null) %}
                     <li>
