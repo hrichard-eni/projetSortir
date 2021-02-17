@@ -136,6 +136,7 @@
         var jourDateFin;
         var isOrganisateur;
         var isInscrit;
+        var isNotInscrit;
         var idUser = {{ app.user.id }};
 
     function init(){
@@ -152,6 +153,7 @@
         jourDateFin = document.getElementById('filtres_sorties_form_dateFin_day');
         isOrganisateur = document.getElementById('filtres_sorties_form_isOrganisateur');
         isInscrit = document.getElementById('filtres_sorties_form_isInscrit');
+        isNotInscrit = document.getElementById('filtres_sorties_form_isNotInscrit');
 
         lignesSorties = document.getElementById('lignesSorties');
         let optionAllCampus = document.createElement("option");
@@ -175,6 +177,13 @@
         isInscrit.addEventListener('change', (event) => {
             if (event.currentTarget.checked) {
                 inscritSelect(idUser)
+            }
+            else campusSelect();
+        })
+
+        isNotInscrit.addEventListener('change', (event) => {
+            if (event.currentTarget.checked) {
+                notInscritSelect(idUser)
             }
             else campusSelect();
         })
@@ -297,28 +306,49 @@
                 }
             });
 
+    }
 
-
-
-
-        /*
+    function notInscritSelect(idUser) {
         let tr_lignesSorties = lignesSorties.children;
+        var idsortie;
 
-        for (var i=0; i<tr_lignesSorties.length; i++) {
+        console.log(tr_lignesSorties);
 
-            for ( var participant of inscritArray) {
-                console.log(participant);
+        $.ajax({
 
-                if (participant && participant == idUser) {
-                    tr_lignesSorties[i].style = "";
-                }else
-                {
-                    tr_lignesSorties[i].style.display="none";
+            "url": "{{ path('api_sorties_list')}}",
+        })
+            .done(function(response){
+                console.log(response);
+                console.log(idUser);
+
+                for (var i=0; i<tr_lignesSorties.length; i++) {
+
+                    idsortie = tr_lignesSorties[i].dataset.idSortie;
+                    console.log(idsortie)
+                    let sortie = response.find(element => element.id == idsortie);
+
+                    let estInscrit = false;
+
+                    for (let participant of sortie.participants) {
+
+                        console.log(participant);
+
+                        if (participant.id == idUser) {
+                            estInscrit = true;
+                        }
+
+                        console.log(estInscrit)
+
+                    }
+
+                    if (!estInscrit) {
+                        tr_lignesSorties[i].style = "";
+                    } else {
+                        tr_lignesSorties[i].style.display = "none";
+                    }
                 }
-            }
-
-        }
-        */
+            });
     }
 
 

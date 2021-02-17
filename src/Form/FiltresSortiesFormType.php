@@ -23,11 +23,11 @@ class FiltresSortiesFormType extends AbstractType
             ])
             ->add('dateDebut', DateType::class, [
                 'widget' => 'choice',
-                'label' => "Date de début"
+                'label' => "A partir de :"
             ])
             ->add('dateFin', DateType::class, [
                 'widget' => 'choice',
-                'label' => "Date de fin d'inscription"
+                'label' => "Jusqu'à :"
             ])
             ->add('isOrganisateur', CheckboxType::class, [
                 'label' => "Sorties dont je suis l'organisateur/trice",
@@ -36,6 +36,11 @@ class FiltresSortiesFormType extends AbstractType
             ->add('isInscrit', CheckboxType::class, [
                 'label' => "Sorties auxquelles je suis inscrit/e",
                 'required' => false,
+            ])
+            ->add('isNotInscrit', CheckboxType::class, [
+                'label' => "Sorties auxquelles je ne suis pas inscrit/e",
+                'required' => false,
+                'mapped' => false
             ])
 
 
