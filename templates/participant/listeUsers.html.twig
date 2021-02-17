@@ -15,7 +15,8 @@
             {% if participant.telephone|length >= 10 %}
                 <strong>Telephone : </strong>{{ participant.telephone }} |
             {% endif %}
-            <strong>Campus : </strong>{{ participant.campus.nom }}
+            <strong>Campus : </strong>{{ participant.campus.nom }} |
+            <a href="{{ path('participant_profilautrui', {id: participant.id}) }}">Voir profil</a>
 
             {% if participant.administrateur == false %}
             <!-- Trigger de la popup -->
@@ -31,11 +32,11 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="confirmSupp">Supprimer un {{ participant.pseudo }}</h5>
+                            <h5 class="modal-title" id="confirmSupp">Supprimer un {{ participant.pseudo }}"</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            Est-tu sûr de vouloir supprimer {{ participant.pseudo }} ?
+                            Es-tu sûr de vouloir supprimer {{ participant.pseudo }} ?
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Annuler</button>
