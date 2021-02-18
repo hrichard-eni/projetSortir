@@ -55,13 +55,7 @@
                                 <td class="col-1 d-none d-xl-table-cell center">
                                     {{ sortie.participants|length }} /{{ sortie.nbInscriptionsMax }}
                                 </td>
-                                <td class="col-1">{% if (sortie.dateLimiteInscription > date("now")) %}
-                                        Ouverte
-                                    {% elseif (sortie.dateHeureDebut < date("now")) %}
-                                        Passée
-                                    {% elseif (sortie.dateLimiteInscription < date("now")) and (sortie.dateHeureDebut > date("now")) %}
-                                        Cloturée
-                                    {% endif %}</td>
+                                <td class="col-1">{{ sortie.etat.libelle  }}</td>
                                 <td class="col-1 d-none d-xl-table-cell center">
                                     {% if sortie.isParticipant (app.user.id) %}
                                         X
