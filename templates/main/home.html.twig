@@ -71,7 +71,7 @@
                                 <td class="col-1 center">
                                     {% if sortie.isParticipant (app.user.id) and (sortie.dateLimiteInscription > date("now")) and app.user.id != sortie.organisateur.id %}
                                         <a href="{{ path('desinscription_sortie',{id:sortie.id}) }}">
-                                            <button class="btn btn-danger w-100" type="button" style="opacity: 80%">
+                                            <button class="btn btn-danger w-100 h-100" type="button" style="opacity: 80%">
                                                 Se&nbsp;désister
                                             </button>
                                         </a>
