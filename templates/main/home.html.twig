@@ -55,7 +55,7 @@
                                 <td class="col-1 d-none d-xl-table-cell center">
                                     {{ sortie.participants|length }} /{{ sortie.nbInscriptionsMax }}
                                 </td>
-                                <td class="col-1">{{ sortie.etat.libelle  }}</td>
+                                <td class="col-1">{{ sortie.etat.libelle }}</td>
                                 <td class="col-1 d-none d-xl-table-cell center">
                                     {% if sortie.isParticipant (app.user.id) %}
                                         X
@@ -69,19 +69,21 @@
                                                 Se&nbsp;désister
                                             </button>
                                         </a>
-                                    {% elseif (not sortie.isParticipant (app.user.id)) and (sortie.dateLimiteInscription > date("now")) and app.user.id != sortie.organisateur.id %}
+                                    {% elseif (not sortie.isParticipant (app.user.id)) and (sortie.dateLimiteInscription > date("now"))
+                                        and app.user.id != sortie.organisateur.id and sortie.etat.id != 1 %}
                                         <a href="{{ path('inscription_sortie',{id:sortie.id}) }}">
-                                            <button class="btn btn-success w-100 p-3" type="button" style="opacity: 80%">
+                                            <button class="btn btn-success w-100 p-3" type="button"
+                                                    style="opacity: 80%">
                                                 S'inscrire
                                             </button>
                                         </a>
-
-                                        {% elseif (sortie.organisateur.id == app.user.id) %}
-                                            <a href="{{ path('sorties_detail',{id:sortie.id}) }}">
-                                                <button class="btn btn-primary w-100 p-3" type="button" style="opacity: 80%">
-                                                    Détails
-                                                </button>
-                                            </a>
+                                    {% else %}
+                                        <a href="{{ path('sorties_detail',{id:sortie.id}) }}">
+                                            <button class="btn btn-primary w-100 p-3" type="button"
+                                                    style="opacity: 80%">
+                                                Détails
+                                            </button>
+                                        </a>
 
 
                                     {% endif %}
